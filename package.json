@@ -1,0 +1,41 @@
+{
+  "name": "angular-form-validator",
+  "version": "1.0.0",
+  "description": "Angular validation directive with validation rules and error messages.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smikodanic/angular-form-validator.git"
+  },
+  "keywords": [
+    "angular",
+    "angularjs",
+    "ng",
+    "form",
+    "validation",
+    "validate",
+    "validator",
+    "angular form validation",
+    "validate angular form",
+    "angular form validator"
+  ],
+  "author": "Sasa Mikodanic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smikodanic/angular-form-validator/issues"
+  },
+  "homepage": "https://github.com/smikodanic/angular-form-validator#readme",
+  "dependencies": {
+    "browserify": "^13.1.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-header": "^1.8.8",
+    "gulp-htmlmin": "^2.0.0",
+    "gulp-uglify": "^2.0.0",
+    "rimraf": "^2.5.4",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
