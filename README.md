@@ -48,7 +48,7 @@ Config (rules and error messages) are defined inside **config** object.
 <input type="text" list="countrylist" class="form-control"
 	ng-model="userDoc.country"
 	ngform-validator="configObject">
-
+```
 
 
 ## 5. Licence

@@ -1,3 +1,6 @@
 node_modules
 bower_components
-/npm-debug.log
+
+# SASS cache files
+.gulp-scss-cache/*
+.sass-cache/*
