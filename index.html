@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>angular-form-validator Examples</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./dist/css/main.css">
+
+</head>
+
+<body ng-app="ngFormValidator" style="padding-top:25px">
+
+	<div class="container">
+
+		<form action="#" method="POST" enctype="application/x-www-form-urlencoded" class="form-horizontal">
+
+			<div class="form-group">
+				<label for="age" class="col-sm-2 control-label">Age</label>
+				<div class="col-sm-5">
+					<input type="Text" id="age" class="form-control"
+					ng-init="age = 123"
+					ng-model="age"
+					ngform-validator="{type: 'Number', required: 'Username is required'}">
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+
+
+
+
+	<!-- JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+
+	<!-- JS compiled by browserify -->
+	<script src="./dist/js/ngFormValidator.js"></script>
+
+
+</body>
+</html>
