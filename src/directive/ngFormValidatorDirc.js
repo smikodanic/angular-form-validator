@@ -1,21 +1,33 @@
 /*global angular*/
-var stringify = require('json-stringify-safe');
+// var stringify = require('json-stringify-safe');
 
-module.exports = function (ngValidationRules, $parse, $timeout) {
+module.exports = function ($parse, $timeout, validateFact) {
     'use strict';
-    console.log('DIRECT works');
 
     var directiveObj = {
         restrict: 'A',
         replace: false,
         scope: false,
         link: function (scope, iElem, iAttrs) { //post-link function
-            //model input value
+            // console.log(stringify(iAttrs.ngModel, null, 2));
+
+            //GET INPUT MODEL (if ng-model="age" => iAttrs.model='age')
             var inputModel = scope[iAttrs.ngModel];
 
-            /************* DETERMINE TYPE (string, number, date, boolean, objectId, mixed) ***************/
+            //GET RULES (from ngform-validator="{...}" which is string)
+            var rulesObj = iAttrs.ngformValidator;
+            rulesObj = $parse(rulesObj)() || {type: 'string'}; //$parse converts string to object
+            // console.log(rulesObj);
 
-            //get type from <input type="number" ...
+            //GET OPTIONS
+            var options = iAttrs.ngformValidatorOptions || {};
+            options = $parse(options)() || {validateOn: 'blur'}; //$parse converts string to object
+
+
+
+            //DEFINE TYPE (string, number, date, boolean, objectId, mixed)
+
+            //// get type from <input type="number" ...
             var inputType;
             if (iAttrs.type) {
                 inputType = iAttrs.type.toLowerCase();
@@ -42,40 +54,50 @@ module.exports = function (ngValidationRules, $parse, $timeout) {
             } else {
                 inputType = 'string';
             }
-
-            console.log('INPUT TYPE: ' + inputType);
-
-            //rules object
-            var rulesObj = iAttrs.ngformValidator;
-            rulesObj = $parse(rulesObj)(); //convert string to object
-            // console.log(rulesObj);
+            // console.log('INPUT TYPE: ' + inputType);
 
 
-            //// define type
+
+            //// final type
             var type = rulesObj.type || inputType;
             type = type.toLowerCase();
-            console.log(type, 'FINAL TYPE');
+            // console.log('FINAL TYPE: ' + type);
 
 
-            scope.$watch(iAttrs.ngModel, function (val) {
-                console.log(val);
 
-                if (type === 'number') {
-                    iAttrs.ngModel = Number(val); //converting to number if possible
-                    console.info(iAttrs.ngModel);
-                    var tf = ngValidationRules.isNumber(iAttrs.ngModel);
-                    console.log(tf);
 
-                    if (!tf) {
-                        iElem.addClass('redborder');
-                    } else {
-                        iElem.removeClass('redborder');
-                    }
-                }
+            //ERROR MESSAGE (default value)
+            scope.errMsg = {};
+
+
+            /******************************** VALIDATION on secific EVENT *********************************/
+            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
+
+            iElem.on(options.validateOn, function () {
+                // console.log(options.validateOn);
+
+                /*** TYPE VALIDATORS ***/
+                $timeout(function () {
+                    scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
+                    // console.log(JSON.stringify(scope.errMsg, null, 2));
+                }, 1300);
 
             });
-        }
-    };
+
+
+
+
+
+
+
+
+
+
+
+        } //link:
+
+    }; //directiveObj
+
 
     return directiveObj;
 

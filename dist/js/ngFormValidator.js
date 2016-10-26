@@ -54,23 +54,35 @@ module.exports = function ($scope, $element, $attrs) {
 
 },{"json-stringify-safe":1}],3:[function(require,module,exports){
 /*global angular*/
-var stringify = require('json-stringify-safe');
+// var stringify = require('json-stringify-safe');
 
-module.exports = function (ngValidationRules, $parse, $timeout) {
+module.exports = function ($parse, $timeout, validateFact) {
     'use strict';
-    console.log('DIRECT works');
 
     var directiveObj = {
         restrict: 'A',
         replace: false,
         scope: false,
         link: function (scope, iElem, iAttrs) { //post-link function
-            //model input value
+            // console.log(stringify(iAttrs.ngModel, null, 2));
+
+            //GET INPUT MODEL (if ng-model="age" => iAttrs.model='age')
             var inputModel = scope[iAttrs.ngModel];
 
-            /************* DETERMINE TYPE (string, number, date, boolean, objectId, mixed) ***************/
+            //GET RULES (from ngform-validator="{...}" which is string)
+            var rulesObj = iAttrs.ngformValidator;
+            rulesObj = $parse(rulesObj)() || {type: 'string'}; //$parse converts string to object
+            // console.log(rulesObj);
 
-            //get type from <input type="number" ...
+            //GET OPTIONS
+            var options = iAttrs.ngformValidatorOptions || {};
+            options = $parse(options)() || {validateOn: 'blur'}; //$parse converts string to object
+
+
+
+            //DEFINE TYPE (string, number, date, boolean, objectId, mixed)
+
+            //// get type from <input type="number" ...
             var inputType;
             if (iAttrs.type) {
                 inputType = iAttrs.type.toLowerCase();
@@ -97,99 +109,135 @@ module.exports = function (ngValidationRules, $parse, $timeout) {
             } else {
                 inputType = 'string';
             }
-
-            console.log('INPUT TYPE: ' + inputType);
-
-            //rules object
-            var rulesObj = iAttrs.ngformValidator;
-            rulesObj = $parse(rulesObj)(); //convert string to object
-            // console.log(rulesObj);
+            // console.log('INPUT TYPE: ' + inputType);
 
 
-            //// define type
+
+            //// final type
             var type = rulesObj.type || inputType;
             type = type.toLowerCase();
-            console.log(type, 'FINAL TYPE');
+            // console.log('FINAL TYPE: ' + type);
 
 
-            scope.$watch(iAttrs.ngModel, function (val) {
-                console.log(val);
 
-                if (type === 'number') {
-                    iAttrs.ngModel = Number(val); //converting to number if possible
-                    console.info(iAttrs.ngModel);
-                    var tf = ngValidationRules.isNumber(iAttrs.ngModel);
-                    console.log(tf);
 
-                    if (!tf) {
-                        iElem.addClass('redborder');
-                    } else {
-                        iElem.removeClass('redborder');
-                    }
-                }
+            //ERROR MESSAGE (default value)
+            scope.errMsg = {};
+
+
+            /******************************** VALIDATION on secific EVENT *********************************/
+            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
+
+            iElem.on(options.validateOn, function () {
+                // console.log(options.validateOn);
+
+                /*** TYPE VALIDATORS ***/
+                $timeout(function () {
+                    scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
+                    // console.log(JSON.stringify(scope.errMsg, null, 2));
+                }, 1300);
 
             });
-        }
-    };
+
+
+
+
+
+
+
+
+
+
+
+        } //link:
+
+    }; //directiveObj
+
 
     return directiveObj;
 
 };
 
-},{"json-stringify-safe":1}],4:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*global angular*/
+var validationRules = require('../lib/validationRules');
+
 module.exports = function () {
     'use strict';
 
+    var err = {};
 
     return {
-        isString: function (input) {
-            return angular.isString(input);
-        },
+        type: {
 
-        isNumber: function (input) {
-            var tf;
-            if (isNaN(input)) {
-                tf = false;
-            } else {
-                tf = angular.isNumber(input);
+            number: function (scope, iElem, iAttrs) {
+
+                //CORRECTOR: converting model's value to number when <input type="text"> is used
+                scope[iAttrs.ngModel] = Number(scope[iAttrs.ngModel]) || scope[iAttrs.ngModel];
+
+                var tf = validationRules.isNumber(scope[iAttrs.ngModel]);
+                // console.log(tf);
+
+
+                if (!tf) {
+                    iElem.addClass('redborder');
+                    err= 'Value must be a number.';
+                } else {
+                    iElem.removeClass('redborder');
+                    err = '';
+                }
+
+                return err;
             }
-            return tf;
         }
+
     };
 
 };
 
-},{}],5:[function(require,module,exports){
+},{"../lib/validationRules":5}],5:[function(require,module,exports){
+/*global angular*/
+module.exports = {
+    isString: function (input) {
+        'use strict';
+        return angular.isString(input);
+    },
+
+    isNumber: function (input) {
+        'use strict';
+        var tf;
+        if (isNaN(input)) {
+            tf = false;
+        } else if (!input) { //return true if input is empty, 0 or null
+            tf = true;
+        } else {
+            tf = angular.isNumber(input);
+        }
+        return tf;
+    }
+};
+
+},{}],6:[function(require,module,exports){
 /*global angular, window*/
 
 var ngFormValidator = angular.module('ngFormValidator', []);
 
 ngFormValidator.controller('NgFormValidatorCtrl', require('./controller/ngFormValidatorCtrl'));
 
-ngFormValidator.factory('ngValidationRules', require('./factory/ngValidationRules'));
+ngFormValidator.factory('validateFact', require('./factory/validateFact'));
 
-
-
-/* login form and logout button directives */
 ngFormValidator.directive('ngformValidator', require('./directive/ngFormValidatorDirc'));
 
 
-//define default templates
-ngFormValidator.run(function ($templateCache) {
-    'use strict';
-    $templateCache.put('simple.html', '<div>jednostavno</div>');
-});
+
 
 
 /*when used in browserify (require('angular-passport')) */
 module.exports = ngFormValidator;
-
-
 
 /*when included in html file
 <script src=".../dist/js/ngFormValidator.js"></script>
 */
 window.ngFormValidator = ngFormValidator;
 
-},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./factory/ngValidationRules":4}]},{},[5]);
+},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./factory/validateFact":4}]},{},[6]);

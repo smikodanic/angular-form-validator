@@ -12,9 +12,9 @@
 This is angular module which gives you angular directive for HTML form validation.
 - easy to integrate in your existing angular 1.4+ project
 - many default validation rules inspired by [mongoose validation](http://mongoosejs.com/docs/validation.html)
+- validation on almost all [jQuery events](https://api.jquery.com/category/events/): 'change', 'keyup', 'click', ...
 - developer can also create custom validation rules
-- tooltip error messages
-- help-block error messages
+- error messages in custom HTML
 - not dependant on any CSS framework (Bootstrap, Foundation, Material, ...etc) or any JS library like jQuery
 - 100% native angular
 
@@ -51,7 +51,18 @@ Config (rules and error messages) are defined inside **config** object.
 ```
 
 
-## 5. Licence
+
+## Options
+
+```html
+ngform-validator-options="{validateOn: 'keyup'}"
+```
+
+- validateOn: 'change' | 'keyup' (any of [jQuery events](https://api.jquery.com/category/events/) )
+
+
+
+## 6. Licence
 *Copyright (c) 2016 Saša Mikodanić*
 
 Licensed under [MIT](https://opensource.org/licenses/MIT) .

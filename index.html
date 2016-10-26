@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" type="text/css" href="./dist/css/main.css">
 
 </head>
@@ -16,17 +16,67 @@
 
 	<div class="container">
 
+		<!-- bootstrap form -->
+		<h3><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> form</h3>
 		<form action="#" method="POST" enctype="application/x-www-form-urlencoded" class="form-horizontal">
 
-			<div class="form-group">
-				<label for="age" class="col-sm-2 control-label">Age</label>
+			<div ng-class="{'form-group': true, 'has-error': errMsg.age}">
+				<label for="age" class="col-sm-3 control-label">Age <small>(number onChange)</small></label>
 				<div class="col-sm-5">
 					<input type="Text" id="age" class="form-control"
-					ng-init="age = 123"
-					ng-model="age"
-					ngform-validator="{type: 'Number', required: 'Username is required'}">
+						ng-init="age = 35"
+						ng-model="age"
+						ngform-validator="{type: 'number', required: 'This field is required.'}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.age}}</p>
 				</div>
 			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.qty}">
+				<label for="quantity" class="col-sm-3 control-label">Quantity <small>(number onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="number" id="quantity" class="form-control"
+						ng-model="qty"
+						ngform-validator="{type: 'number', required: 'Quantity field is required.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.qty}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.desc}">
+				<label for="description" class="col-sm-3 control-label">Description <small>(number onKeyup)</small></label>
+				<div class="col-sm-5">
+					<textarea type="number" id="description" class="form-control"
+						ng-model="desc"
+						ngform-validator="{type: 'number', required: 'Quantity field is required.'}"
+						ngform-validator-options="{validateOn: 'keyup'}"></textarea>
+					<p class="help-block" ng-cloak>{{errMsg.desc}}</p>
+				</div>
+			</div>
+
+		</form>
+
+
+		<!-- <br>
+		<br>
+		<br>
+		<div class="ttip" style="border:1px solid red">Hover me
+  			<span class="tooltiptext">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+			</span>
+		</div> -->
+
+
+		<div class="clearfix">&nbsp;</div><br><br><br><br>
+
+		<h3>Ordinary HTML form</h3>
+		<form action="">
+			<label for="price">Price</label>
+			<input type="text" id="price"
+				ng-model="prc"
+				ngform-validator="{type: 'number'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.prc}}</span>
 
 		</form>
 
