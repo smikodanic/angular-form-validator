@@ -16,5 +16,12 @@ module.exports = {
             tf = angular.isNumber(input);
         }
         return tf;
+    },
+
+    isDate: function (input) {
+        'use strict';
+        var result = Date.parse(input);
+        return !!result;
     }
+
 };

@@ -20,6 +20,17 @@
 		<h3><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> form</h3>
 		<form action="#" method="POST" enctype="application/x-www-form-urlencoded" class="form-horizontal">
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.name}">
+				<label for="fname" class="col-sm-3 control-label">Firts name <small>(string onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="fname" class="form-control"
+						ng-model="name"
+						ngform-validator="{type: 'string', required: 'Name field is required.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.name}}</p>
+				</div>
+			</div>
+
 			<div ng-class="{'form-group': true, 'has-error': errMsg.age}">
 				<label for="age" class="col-sm-3 control-label">Age <small>(number onChange)</small></label>
 				<div class="col-sm-5">
@@ -53,6 +64,21 @@
 					<p class="help-block" ng-cloak>{{errMsg.desc}}</p>
 				</div>
 			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.date}">
+				<label for="bornid" class="col-sm-3 control-label">Born <small>(date onChange)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="bornid" class="form-control"
+						placeholder="mm.dd.yyyy or mm/dd/yy hh:mm:ss"
+						ng-model="born"
+						ngform-validator="{type: 'date'}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.born}}</p>
+				</div>
+			</div>
+
+
+
 
 		</form>
 
