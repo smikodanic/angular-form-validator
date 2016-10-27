@@ -52,13 +52,22 @@ Config (rules and error messages) are defined inside **config** object.
 
 
 
-## Options
+## 5. Validation rules
+
+- **string** - accepts any string value
+- **number** - accepts integer or float numbers (12 , 12.23, 1.2e-21)
+- **date**
+
+
+
+## 6. Options
 
 ```html
 ngform-validator-options="{validateOn: 'keyup'}"
 ```
 
 - validateOn: 'change' | 'keyup' (any of [jQuery events](https://api.jquery.com/category/events/) )
+
 
 
 
