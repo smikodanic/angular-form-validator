@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var rename = require("gulp-rename");
 
 //GULP Tasks
 gulp.task('rimraf', require('./tasks/rimraf.js'));
@@ -12,7 +13,7 @@ gulp.task('scss', function () {
     'use strict';
     gulp
         .src([
-            'src/main.scss'
+            'src/ngFormValidator.scss'
         ])
         .pipe(compass({
             style: 'expanded', //nested, expanded, compact, or compressed

@@ -1,5 +1,5 @@
 # angular-form-validator
-> Angular validation directive with validation rules and error messages.
+> Angular validation directive with validation rules and error messages. Angular form validator that you will love!
 
 
 
@@ -38,6 +38,7 @@ var clientApp = angular.module('clientApp', [
 <script src="... /angular-form-validator/dist/js/ngFormValidator.js"></script>
 ```
 
+##### Also don't forget to include CSS file.
 
 
 ## 4. Angular Directive

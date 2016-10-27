@@ -3,12 +3,13 @@
  * Compiles SCSS files into CSS.
  */
 var compass = require('gulp-compass');
+var rename = require("gulp-rename");
 
 module.exports = function (gulp) {
     'use strict';
     gulp
         .src([
-            'client/src/main.scss'
+            'src/main.scss'
         ])
         .pipe(compass({
             style: 'expanded', //nested, expanded, compact, or compressed
@@ -17,5 +18,7 @@ module.exports = function (gulp) {
             sass: 'client/src', //source sass/scss files dir
             logging: true,
             time: true
-        }));
+        }))
+        .pipe(gulp.dest('dist/css'))
+        .pipe(rename('dist/ngFormValidator.css'));
 };

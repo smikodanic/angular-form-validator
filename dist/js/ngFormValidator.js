@@ -213,16 +213,12 @@ module.exports = function () {
                 //CORRECTOR: converting model's value to date when <input type="text"> is used
                 var dateCorrected = new Date(scope[iAttrs.ngModel]);
                 dateCorrected = dateCorrected.toString();
-                console.log('tf ', dateCorrected, dateCorrected === 'Invalid Date', typeof dateCorrected);
                 dateCorrected = (dateCorrected === 'Invalid Date')
                     ? false
                     : dateCorrected;
                 scope[iAttrs.ngModel] = dateCorrected || scope[iAttrs.ngModel];
-                console.log(JSON.stringify(scope[iAttrs.ngModel], null, 2));
 
                 var tf = validationRules.isDate(scope[iAttrs.ngModel]);
-                console.log(tf);
-
 
                 if (!tf) {
                     iElem.addClass('redborder');
