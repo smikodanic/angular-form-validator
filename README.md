@@ -12,7 +12,7 @@
 This is angular module which gives you angular directive for HTML form validation.
 - easy to integrate in your existing angular 1.4+ project
 - many default validation rules inspired by [mongoose validation](http://mongoosejs.com/docs/validation.html)
-- validation on almost all [jQuery events](https://api.jquery.com/category/events/): 'change', 'keyup', 'click', ...
+- validation on almost all [jQuery events](https://api.jquery.com/category/events/): 'change', 'keyup', 'click', 'blur' ...etc
 - developer can also create custom validation rules
 - error messages in custom HTML
 - not dependant on any CSS framework (Bootstrap, Foundation, Material, ...etc) or any JS library like jQuery
@@ -39,6 +39,11 @@ var clientApp = angular.module('clientApp', [
 ```
 
 ##### Also don't forget to include CSS file.
+```html
+<head>
+	<link rel="stylesheet" type="text/css" href="./dist/css/ngFormValidator.css">
+</head>
+```
 
 
 ## 4. Angular Directive

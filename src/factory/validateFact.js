@@ -69,7 +69,26 @@ module.exports = function () {
 
                 return err;
             }
+        },
+
+
+        required: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = !!scope[iAttrs.ngModel]; //check if field is empty
+
+            if (!tf) {
+                iElem.addClass('redborder');
+                err = rulesObj.required;
+            } else {
+                iElem.removeClass('redborder');
+                err = '';
+            }
+
+            return err;
         }
+
+
+
+
 
     };
 

@@ -40,15 +40,21 @@ function serializer(replacer, cycleReplacer) {
 var stringify = require('json-stringify-safe');
 
 
-module.exports = function ($scope, $element, $attrs) {
+module.exports = function ($scope, $element, $attrs, $timeout) {
     'use strict';
 
-    console.log('CTRL works');
+    // console.log(stringify($attrs, null, 2));
 
-    var attrs = JSON.parse(stringify($attrs));
-    console.log(attrs);
 
-    console.log(JSON.stringify($attrs.class, null, 2));
+    $scope.mySubmit = function (evt) {
+        $timeout(function () {
+            $scope.errMsg.age = 'Error on age field';
+            alert('SUBMITTED with error');
+        }, 1300);
+    };
+
+
+
 
 };
 
@@ -67,7 +73,7 @@ module.exports = function ($parse, $timeout, validateFact) {
             // console.log(stringify(iAttrs.ngModel, null, 2));
 
             //GET INPUT MODEL (if ng-model="age" => iAttrs.model='age')
-            var inputModel = scope[iAttrs.ngModel];
+            // var inputModel = scope[iAttrs.ngModel];
 
             //GET RULES (from ngform-validator="{...}" which is string)
             var rulesObj = iAttrs.ngformValidator;
@@ -134,9 +140,21 @@ module.exports = function ($parse, $timeout, validateFact) {
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
-                    // console.log(JSON.stringify(scope.errMsg, null, 2));
                 }, 1300);
 
+            });
+
+
+            //onBlur checks: required
+            iElem.on('blur', function () {
+                $timeout(function () {
+
+                    if (rulesObj.hasOwnProperty('required')) {
+                        scope.errMsg[iAttrs.ngModel] = validateFact.required(scope, iElem, iAttrs, rulesObj);
+                        // console.log(JSON.stringify(scope.errMsg, null, 2));
+                    }
+
+                }, 800);
             });
 
 
@@ -230,7 +248,26 @@ module.exports = function () {
 
                 return err;
             }
+        },
+
+
+        required: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = !!scope[iAttrs.ngModel]; //check if field is empty
+
+            if (!tf) {
+                iElem.addClass('redborder');
+                err = rulesObj.required;
+            } else {
+                iElem.removeClass('redborder');
+                err = '';
+            }
+
+            return err;
         }
+
+
+
+
 
     };
 
@@ -260,7 +297,12 @@ module.exports = {
     isDate: function (input) {
         'use strict';
         var result = Date.parse(input);
-        return !!result;
+
+        if (input) {
+            return !!result;
+        } else {
+            return true; // return true if input is empty
+        }
     }
 
 };

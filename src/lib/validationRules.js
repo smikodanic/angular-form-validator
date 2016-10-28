@@ -21,7 +21,12 @@ module.exports = {
     isDate: function (input) {
         'use strict';
         var result = Date.parse(input);
-        return !!result;
+
+        if (input) {
+            return !!result;
+        } else {
+            return true; // return true if input is empty
+        }
     }
 
 };

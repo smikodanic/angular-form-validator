@@ -14,7 +14,7 @@
 
 <body ng-app="ngFormValidator" style="padding-top:25px">
 
-	<div class="container">
+	<div class="container" ng-controller="NgFormValidatorCtrl">
 
 		<!-- bootstrap form -->
 		<h3><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> form</h3>
@@ -60,7 +60,7 @@
 				<div class="col-sm-5">
 					<textarea type="number" id="description" class="form-control"
 						ng-model="desc"
-						ngform-validator="{type: 'number', required: 'Quantity field is required.'}"
+						ngform-validator="{type: 'number', required: 'Description field is required.'}"
 						ngform-validator-options="{validateOn: 'keyup'}"></textarea>
 					<p class="help-block" ng-cloak>{{errMsg.desc}}</p>
 				</div>
@@ -75,6 +75,25 @@
 						ngform-validator="{type: 'date'}"
 						ngform-validator-options="{validateOn: 'change'}">
 					<p class="help-block" ng-cloak>{{errMsg.born}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.reqd}">
+				<label for="reqd" class="col-sm-3 control-label">Required <small>(number onChange)</small></label>
+				<div class="col-sm-5">
+					<input type="Text" id="reqd" class="form-control"
+						ng-model="reqd"
+						ng-init="reqdRules = {type: 'number', required: 'This field is required.'}"
+						ngform-validator="{{reqdRules}}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.reqd}}</p>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-2 col-sm-push-3">
+					<button type="button" class="btn btn-primary"
+						ng-click="mySubmit($event); $event.preventDefault();">Submit</button>
 				</div>
 			</div>
 

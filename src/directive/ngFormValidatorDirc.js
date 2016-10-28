@@ -12,7 +12,7 @@ module.exports = function ($parse, $timeout, validateFact) {
             // console.log(stringify(iAttrs.ngModel, null, 2));
 
             //GET INPUT MODEL (if ng-model="age" => iAttrs.model='age')
-            var inputModel = scope[iAttrs.ngModel];
+            // var inputModel = scope[iAttrs.ngModel];
 
             //GET RULES (from ngform-validator="{...}" which is string)
             var rulesObj = iAttrs.ngformValidator;
@@ -79,9 +79,21 @@ module.exports = function ($parse, $timeout, validateFact) {
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
-                    // console.log(JSON.stringify(scope.errMsg, null, 2));
                 }, 1300);
 
+            });
+
+
+            //onBlur checks: required
+            iElem.on('blur', function () {
+                $timeout(function () {
+
+                    if (rulesObj.hasOwnProperty('required')) {
+                        scope.errMsg[iAttrs.ngModel] = validateFact.required(scope, iElem, iAttrs, rulesObj);
+                        // console.log(JSON.stringify(scope.errMsg, null, 2));
+                    }
+
+                }, 800);
             });
 
 
