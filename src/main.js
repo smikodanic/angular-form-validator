@@ -7,6 +7,7 @@ ngFormValidator.controller('NgFormValidatorCtrl', require('./controller/ngFormVa
 ngFormValidator.factory('validateFact', require('./factory/validateFact'));
 
 ngFormValidator.directive('ngformValidator', require('./directive/ngFormValidatorDirc'));
+ngFormValidator.directive('ngformValidatorReset', require('./directive/ngFormValidatorResetDirc'));
 
 
 

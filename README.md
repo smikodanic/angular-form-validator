@@ -18,6 +18,7 @@ This is angular module which gives you angular directive for HTML form validatio
 - not dependant on any CSS framework (Bootstrap, Foundation, Material, ...etc) or any JS library like jQuery
 - 100% native angular
 
+DEMO: [https://smikodanic.github.io/angular-form-validator/](https://smikodanic.github.io/angular-form-validator/)
 
 
 ## 3. Integration

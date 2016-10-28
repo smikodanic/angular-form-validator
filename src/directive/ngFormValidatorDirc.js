@@ -79,7 +79,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
-                }, 1300);
+                }, 800);
 
             });
 
@@ -93,7 +93,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                         // console.log(JSON.stringify(scope.errMsg, null, 2));
                     }
 
-                }, 800);
+                }, 1300);
             });
 
 

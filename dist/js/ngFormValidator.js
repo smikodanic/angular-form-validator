@@ -140,7 +140,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
-                }, 1300);
+                }, 800);
 
             });
 
@@ -154,7 +154,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                         // console.log(JSON.stringify(scope.errMsg, null, 2));
                     }
 
-                }, 800);
+                }, 1300);
             });
 
 
@@ -177,6 +177,31 @@ module.exports = function ($parse, $timeout, validateFact) {
 };
 
 },{}],4:[function(require,module,exports){
+/*global angular*/
+// var stringify = require('json-stringify-safe');
+
+module.exports = function () {
+    'use strict';
+
+    var directiveObj = {
+        restrict: 'A',
+        replace: false,
+        scope: false,
+        link: function (scope, iElem, iAttrs) { //post-link function
+
+            iElem.on('click', function () {
+                scope.errMsg = {};
+                scope.$apply();
+                angular.element('*').removeClass('redborder');
+            });
+
+        }
+    };
+
+    return directiveObj;
+};
+
+},{}],5:[function(require,module,exports){
 /*global angular*/
 var validationRules = require('../lib/validationRules');
 
@@ -273,7 +298,7 @@ module.exports = function () {
 
 };
 
-},{"../lib/validationRules":5}],5:[function(require,module,exports){
+},{"../lib/validationRules":6}],6:[function(require,module,exports){
 /*global angular*/
 module.exports = {
     isString: function (input) {
@@ -307,7 +332,7 @@ module.exports = {
 
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*global angular, window*/
 
 var ngFormValidator = angular.module('ngFormValidator', []);
@@ -317,6 +342,7 @@ ngFormValidator.controller('NgFormValidatorCtrl', require('./controller/ngFormVa
 ngFormValidator.factory('validateFact', require('./factory/validateFact'));
 
 ngFormValidator.directive('ngformValidator', require('./directive/ngFormValidatorDirc'));
+ngFormValidator.directive('ngformValidatorReset', require('./directive/ngFormValidatorResetDirc'));
 
 
 
@@ -330,4 +356,4 @@ module.exports = ngFormValidator;
 */
 window.ngFormValidator = ngFormValidator;
 
-},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./factory/validateFact":4}]},{},[6]);
+},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./directive/ngFormValidatorResetDirc":4,"./factory/validateFact":5}]},{},[7]);
