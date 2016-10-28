@@ -190,9 +190,11 @@ module.exports = function () {
         link: function (scope, iElem, iAttrs) { //post-link function
 
             iElem.on('click', function () {
-                scope.errMsg = {};
-                scope.$apply();
-                angular.element('*').removeClass('redborder');
+                setTimeout(function () {
+                    scope.errMsg = {};
+                    scope.$apply();
+                    angular.element('*').removeClass('redborder');
+                }, 1300);
             });
 
         }
