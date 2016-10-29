@@ -179,31 +179,6 @@ module.exports = function ($parse, $timeout, validateFact) {
 
 },{}],4:[function(require,module,exports){
 /*global angular*/
-var stringify = require('json-stringify-safe');
-
-module.exports = function () {
-    'use strict';
-
-    var directiveObj = {
-        restrict: 'A',
-        replace: true,
-        scope: false,
-        link: function (scope, iElem, iAttrs) { //post-link function
-            console.log(stringify(scope.errMsg, null, 2));
-            console.log(angular.equals(scope.errMsg, {}));
-
-                iElem.attr('ng-disabled', 'errMsg.eml');
-            if (!angular.equals(scope.errMsg, {})) {
-            }
-
-        }
-    };
-
-    return directiveObj;
-};
-
-},{"json-stringify-safe":1}],5:[function(require,module,exports){
-/*global angular*/
 // var stringify = require('json-stringify-safe');
 
 module.exports = function () {
@@ -229,7 +204,7 @@ module.exports = function () {
     return directiveObj;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /*global angular*/
 var validationRules = require('../lib/validationRules');
 
@@ -322,7 +297,7 @@ module.exports = function () {
 
 };
 
-},{"../lib/validationRules":7}],7:[function(require,module,exports){
+},{"../lib/validationRules":6}],6:[function(require,module,exports){
 /*global angular*/
 module.exports = {
     isString: function (input) {
@@ -414,7 +389,7 @@ module.exports = {
 
 };
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*global angular, window*/
 
 var ngFormValidator = angular.module('ngFormValidator', []);
@@ -425,8 +400,6 @@ ngFormValidator.factory('validateFact', require('./factory/validateFact'));
 
 ngFormValidator.directive('ngformValidator', require('./directive/ngFormValidatorDirc'));
 ngFormValidator.directive('ngformValidatorReset', require('./directive/ngFormValidatorResetDirc'));
-ngFormValidator.directive('ngformValidatorDisable', require('./directive/ngFormValidatorDisableDirc'));
-
 
 
 
@@ -439,4 +412,4 @@ module.exports = ngFormValidator;
 */
 window.ngFormValidator = ngFormValidator;
 
-},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./directive/ngFormValidatorDisableDirc":4,"./directive/ngFormValidatorResetDirc":5,"./factory/validateFact":6}]},{},[8]);
+},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./directive/ngFormValidatorResetDirc":4,"./factory/validateFact":5}]},{},[7]);
