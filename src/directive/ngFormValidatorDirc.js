@@ -71,14 +71,19 @@ module.exports = function ($parse, $timeout, validateFact) {
 
 
             /******************************** VALIDATION on secific EVENT *********************************/
-            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
 
+            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
             iElem.on(options.validateOn, function () {
                 // console.log(options.validateOn);
 
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
+
+                    if (rulesObj.hasOwnProperty('email')) {
+                        scope.errMsg[iAttrs.ngModel] = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    }
+
                 }, 800);
 
             });

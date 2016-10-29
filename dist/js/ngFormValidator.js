@@ -132,14 +132,19 @@ module.exports = function ($parse, $timeout, validateFact) {
 
 
             /******************************** VALIDATION on secific EVENT *********************************/
-            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
 
+            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
             iElem.on(options.validateOn, function () {
                 // console.log(options.validateOn);
 
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
+
+                    if (rulesObj.hasOwnProperty('email')) {
+                        scope.errMsg[iAttrs.ngModel] = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    }
+
                 }, 800);
 
             });
@@ -207,6 +212,7 @@ module.exports = function () {
 /*global angular*/
 var validationRules = require('../lib/validationRules');
 
+
 var sendError = function (iElem, tf, errorMessage) {
     'use strict';
 
@@ -225,8 +231,6 @@ var sendError = function (iElem, tf, errorMessage) {
 
 module.exports = function () {
     'use strict';
-
-    var err = {};
 
     return {
         type: {
@@ -270,8 +274,7 @@ module.exports = function () {
         },
 
         email: function (scope, iElem, iAttrs, rulesObj) {
-            var re = /\S+@\S+\.\S+/;
-            var tf = re.test(scope[iAttrs.ngModel]);
+            var tf = validationRules.isEmail(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.email);
         }
 
@@ -313,6 +316,18 @@ module.exports = {
         } else {
             return true; // return true if input is empty
         }
+    },
+
+    isEmail: function (input) {
+        'use strict';
+        var re = new RegExp('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$');
+        // var re = /\S+@\S+\.\S+/;
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
     }
 
 };

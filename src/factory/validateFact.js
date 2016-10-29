@@ -1,6 +1,7 @@
 /*global angular*/
 var validationRules = require('../lib/validationRules');
 
+
 var sendError = function (iElem, tf, errorMessage) {
     'use strict';
 
@@ -19,8 +20,6 @@ var sendError = function (iElem, tf, errorMessage) {
 
 module.exports = function () {
     'use strict';
-
-    var err = {};
 
     return {
         type: {
@@ -64,8 +63,7 @@ module.exports = function () {
         },
 
         email: function (scope, iElem, iAttrs, rulesObj) {
-            var re = /\S+@\S+\.\S+/;
-            var tf = re.test(scope[iAttrs.ngModel]);
+            var tf = validationRules.isEmail(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.email);
         }
 

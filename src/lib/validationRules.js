@@ -27,6 +27,18 @@ module.exports = {
         } else {
             return true; // return true if input is empty
         }
+    },
+
+    isEmail: function (input) {
+        'use strict';
+        var re = new RegExp('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$');
+        // var re = /\S+@\S+\.\S+/;
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
     }
 
 };

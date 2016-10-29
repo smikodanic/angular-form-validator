@@ -90,6 +90,22 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.eml}">
+				<label for="eml" class="col-sm-3 control-label">Email <small>(email onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="eml" class="form-control"
+						ng-model="eml"
+						ng-init="emlRules = {type: 'string', email: 'Email is not valid.'}"
+						ngform-validator="{{emlRules}}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.eml}}</p>
+				</div>
+			</div>
+
+
+
+
+
 			<div class="form-group">
 				<div class="col-sm-2 col-sm-push-3">
 					<button type="button" class="btn btn-primary" ng-click="mySubmit()">Submit</button>
