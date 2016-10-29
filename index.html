@@ -109,7 +109,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.minnum}">
-				<label for="minnum" class="col-sm-4 control-label">Min number <small>(string onKeyup, min:5)</small></label>
+				<label for="minnum" class="col-sm-4 control-label">Min number <small>(string onKeyup, required, min:5)</small></label>
 				<div class="col-sm-3">
 					<input type="text" id="minnum" class="form-control"
 						ng-model="minnum"
@@ -135,7 +135,12 @@
 				<div class="col-sm-3">
 					<input type="text" id="minmaxnum" class="form-control"
 						ng-model="minmaxnum"
-						ngform-validator="{type: 'number', max: ['Num must be equal or less then 5.', 5], min: ['Num must be equal or greater of 3.', 3]}"
+						ngform-validator="{
+							type: 'number',
+							required: 'This field is required!!!',
+							max: ['Num must be equal or less then 5.', 5],
+							min: ['Num must be equal or greater of 3.', 3]
+						}"
 						ngform-validator-options="{validateOn: 'keyup'}">
 					<p class="help-block" ng-cloak>{{errMsg.minmaxnum}}</p>
 				</div>

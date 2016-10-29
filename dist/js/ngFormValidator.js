@@ -130,16 +130,13 @@ module.exports = function ($parse, $timeout, validateFact) {
             //ERROR MESSAGE (default value)
             scope.errMsg = {};
 
+            var errMsg;
 
             /******************************** VALIDATION on secific EVENT *********************************/
 
-            /** (any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/) **/
+            //** on any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/)
             iElem.on(options.validateOn, function () {
-                // console.log(options.validateOn);
 
-                var errMsg;
-
-                /*** TYPE VALIDATORS ***/
                 $timeout(function () {
 
                     //validator synch chain
@@ -150,32 +147,25 @@ module.exports = function ($parse, $timeout, validateFact) {
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
+                    // console.log(JSON.stringify(scope.errMsg, null, 2));
 
                 }, 800);
 
             });
 
 
-            //onBlur checks: required
+            //** onBlur validators
             iElem.on('blur', function () {
+                console.log('blur');
                 $timeout(function () {
+                    if (!errMsg && rulesObj.hasOwnProperty('required')) errMsg = validateFact.required(scope, iElem, iAttrs, rulesObj);
 
-                    if (rulesObj.hasOwnProperty('required')) {
-                        scope.errMsg[iAttrs.ngModel] = validateFact.required(scope, iElem, iAttrs, rulesObj);
-                    }
-
+                    //error message to scope
+                    scope.errMsg[iAttrs.ngModel] = errMsg;
                     // console.log(JSON.stringify(scope.errMsg, null, 2));
+
                 }, 1300);
             });
-
-
-
-
-
-
-
-
-
 
 
         } //link:
