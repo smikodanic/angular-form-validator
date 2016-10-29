@@ -12,7 +12,6 @@ ngFormValidator.directive('ngformValidatorReset', require('./directive/ngFormVal
 
 
 
-
 /*when used in browserify (require('angular-passport')) */
 module.exports = ngFormValidator;
 
