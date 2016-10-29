@@ -141,8 +141,13 @@ module.exports = function ($parse, $timeout, validateFact) {
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
 
+                    //if inserted type is not correct block other validations
+                    if (scope.errMsg[iAttrs.ngModel]) return;
+
                     if (rulesObj.hasOwnProperty('email')) {
                         scope.errMsg[iAttrs.ngModel] = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    } else if (rulesObj.hasOwnProperty('min')) {
+                        scope.errMsg[iAttrs.ngModel] = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     }
 
                 }, 800);
@@ -276,6 +281,11 @@ module.exports = function () {
         email: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isEmail(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.email);
+        },
+
+        min: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasMin(scope[iAttrs.ngModel], rulesObj.min[1]);
+            return sendError(iElem, tf, rulesObj.min[0]);
         }
 
 
@@ -328,6 +338,20 @@ module.exports = {
             ? tf
             : true; // return true if input is empty
 
+    },
+
+    hasMin: function (input, lim) {
+        'use strict';
+        var tf;
+        if (angular.isString(input)) { //when input is string count number of characters
+            tf = (input.length >= lim)
+        } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
+            tf = (input >= lim)
+        }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
 
 };

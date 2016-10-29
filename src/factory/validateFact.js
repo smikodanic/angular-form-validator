@@ -65,6 +65,11 @@ module.exports = function () {
         email: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isEmail(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.email);
+        },
+
+        min: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasMin(scope[iAttrs.ngModel], rulesObj.min[1]);
+            return sendError(iElem, tf, rulesObj.min[0]);
         }
 
 

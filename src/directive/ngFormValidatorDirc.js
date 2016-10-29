@@ -80,8 +80,13 @@ module.exports = function ($parse, $timeout, validateFact) {
                 $timeout(function () {
                     scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
 
+                    //if inserted type is not correct block other validations
+                    if (scope.errMsg[iAttrs.ngModel]) return;
+
                     if (rulesObj.hasOwnProperty('email')) {
                         scope.errMsg[iAttrs.ngModel] = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    } else if (rulesObj.hasOwnProperty('min')) {
+                        scope.errMsg[iAttrs.ngModel] = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     }
 
                 }, 800);

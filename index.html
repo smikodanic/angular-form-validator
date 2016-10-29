@@ -20,14 +20,14 @@
 		<h3><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> form</h3>
 		<form action="#" method="POST" enctype="application/x-www-form-urlencoded" class="form-horizontal">
 
-			<div ng-class="{'form-group': true, 'has-error': errMsg.name}">
+			<div ng-class="{'form-group': true, 'has-error': errMsg.fname}">
 				<label for="fname" class="col-sm-3 control-label">* First name <small>(string onKeyup)</small></label>
 				<div class="col-sm-5">
 					<input type="number" id="fname" class="form-control"
-						ng-model="name"
+						ng-model="fname"
 						ngform-validator="{type: 'string', required: 'Name field is required.'}"
 						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.name}}</p>
+					<p class="help-block" ng-cloak>{{errMsg.fname}}</p>
 				</div>
 				<div class="col-sm-2"><span style="font-size:smaller;float:right;">Intentional error because of type="number"</span></div>
 			</div>
@@ -91,7 +91,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.eml}">
-				<label for="eml" class="col-sm-3 control-label">Email <small>(email onKeyup)</small></label>
+				<label for="eml" class="col-sm-3 control-label">Email <small>(string onKeyup)</small></label>
 				<div class="col-sm-5">
 					<input type="text" id="eml" class="form-control"
 						ng-model="eml"
@@ -101,6 +101,34 @@
 					<p class="help-block" ng-cloak>{{errMsg.eml}}</p>
 				</div>
 			</div>
+
+
+			<br><br>
+			<h4>MIN, MAX, BETWEEN</h4>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.minstr}">
+				<label for="minstr" class="col-sm-3 control-label">Min string <small>(string onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="minstr" class="form-control"
+						ng-model="minstr"
+						ngform-validator="{type: 'string', min: ['The field must have min 3 chars.', 3]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.minstr}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.minnum}">
+				<label for="minnum" class="col-sm-3 control-label">Min number <small>(string onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="minnum" class="form-control"
+						ng-model="minnum"
+						ngform-validator="{type: 'number', min: ['Insert number greater or equal 5.', 5]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.minnum}}</p>
+				</div>
+			</div>
+
+
 
 
 
