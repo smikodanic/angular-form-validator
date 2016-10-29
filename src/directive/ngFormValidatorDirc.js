@@ -76,18 +76,19 @@ module.exports = function ($parse, $timeout, validateFact) {
             iElem.on(options.validateOn, function () {
                 // console.log(options.validateOn);
 
+                var errMsg;
+
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
-                    scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
 
-                    //if inserted type is not correct block other validations
-                    if (scope.errMsg[iAttrs.ngModel]) return;
+                    //validator synch chain
+                    errMsg = validateFact.type[type](scope, iElem, iAttrs);
+                    if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg&& rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
 
-                    if (rulesObj.hasOwnProperty('email')) {
-                        scope.errMsg[iAttrs.ngModel] = validateFact.email(scope, iElem, iAttrs, rulesObj);
-                    } else if (rulesObj.hasOwnProperty('min')) {
-                        scope.errMsg[iAttrs.ngModel] = validateFact.min(scope, iElem, iAttrs, rulesObj);
-                    }
+                    //error message to scope
+                    scope.errMsg[iAttrs.ngModel] = errMsg;
 
                 }, 800);
 

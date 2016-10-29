@@ -62,10 +62,14 @@ Config (rules and error messages) are defined inside **config** object.
 
 ## 5. Validation rules
 
+#### TYPE VALIDATORS
 - **string** - accepts any string value
 - **number** - accepts integer or float numbers (12 , 12.23, 1.2e-21)
-- **date**
+- **date** - accept valid date formats mm/dd/yy , mm/d/yyy hh:mm:ss , m.d.yy , mm.dd.hh and converts it automatically
 
+#### MIN, MAX, BETWEEN
+- **min** - If type:'number' then it will compare two numbers (input >= number). If type:'string' will validate number of characters.
+- **max** - If type:'number' then it will compare two numbers (input <= number). If type:'string' will validate number of characters.
 
 
 ## 6. Options

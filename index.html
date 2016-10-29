@@ -18,7 +18,10 @@
 
 		<!-- bootstrap form -->
 		<h3><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> form</h3>
+
 		<form action="#" method="POST" enctype="application/x-www-form-urlencoded" class="form-horizontal">
+
+			<h4>TYPE VALIDATORS</h4>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.fname}">
 				<label for="fname" class="col-sm-3 control-label">* First name <small>(string onKeyup)</small></label>
@@ -90,6 +93,60 @@
 				</div>
 			</div>
 
+
+			<br><br>
+			<h4>MIN, MAX, BETWEEN VALIDATORS</h4>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.minstr}">
+				<label for="minstr" class="col-sm-4 control-label">Min string <small>(string onKeyup, min:3)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="minstr" class="form-control"
+						ng-model="minstr"
+						ngform-validator="{type: 'string', min: ['The field must have min 3 chars.', 3]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.minstr}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.minnum}">
+				<label for="minnum" class="col-sm-4 control-label">Min number <small>(string onKeyup, min:5)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="minnum" class="form-control"
+						ng-model="minnum"
+						ngform-validator="{type: 'number', required: 'This field is required!', min: ['Insert number greater or equal 5.', 5]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.minnum}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.maxstr}">
+				<label for="maxstr" class="col-sm-4 control-label">Max string <small>(string onKeyup, max:3)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="maxstr" class="form-control"
+						ng-model="maxstr"
+						ngform-validator="{type: 'string', max: ['The field can have max 3 chars.', 3]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.maxstr}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.minmaxnum}">
+				<label for="minmaxnum" class="col-sm-4 control-label">Max Min number <small>(string onKeyup, min:3, max:5)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="minmaxnum" class="form-control"
+						ng-model="minmaxnum"
+						ngform-validator="{type: 'number', max: ['Num must be equal or less then 5.', 5], min: ['Num must be equal or greater of 3.', 3]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.minmaxnum}}</p>
+				</div>
+			</div>
+
+
+
+
+			<br><br>
+			<h4>OTHER VALIDATORS</h4>
+
 			<div ng-class="{'form-group': true, 'has-error': errMsg.eml}">
 				<label for="eml" class="col-sm-3 control-label">Email <small>(string onKeyup)</small></label>
 				<div class="col-sm-5">
@@ -101,33 +158,6 @@
 					<p class="help-block" ng-cloak>{{errMsg.eml}}</p>
 				</div>
 			</div>
-
-
-			<br><br>
-			<h4>MIN, MAX, BETWEEN</h4>
-
-			<div ng-class="{'form-group': true, 'has-error': errMsg.minstr}">
-				<label for="minstr" class="col-sm-3 control-label">Min string <small>(string onKeyup)</small></label>
-				<div class="col-sm-5">
-					<input type="text" id="minstr" class="form-control"
-						ng-model="minstr"
-						ngform-validator="{type: 'string', min: ['The field must have min 3 chars.', 3]}"
-						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.minstr}}</p>
-				</div>
-			</div>
-
-			<div ng-class="{'form-group': true, 'has-error': errMsg.minnum}">
-				<label for="minnum" class="col-sm-3 control-label">Min number <small>(string onKeyup)</small></label>
-				<div class="col-sm-5">
-					<input type="text" id="minnum" class="form-control"
-						ng-model="minnum"
-						ngform-validator="{type: 'number', min: ['Insert number greater or equal 5.', 5]}"
-						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.minnum}}</p>
-				</div>
-			</div>
-
 
 
 

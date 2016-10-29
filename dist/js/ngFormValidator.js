@@ -137,18 +137,19 @@ module.exports = function ($parse, $timeout, validateFact) {
             iElem.on(options.validateOn, function () {
                 // console.log(options.validateOn);
 
+                var errMsg;
+
                 /*** TYPE VALIDATORS ***/
                 $timeout(function () {
-                    scope.errMsg[iAttrs.ngModel] = validateFact.type[type](scope, iElem, iAttrs);
 
-                    //if inserted type is not correct block other validations
-                    if (scope.errMsg[iAttrs.ngModel]) return;
+                    //validator synch chain
+                    errMsg = validateFact.type[type](scope, iElem, iAttrs);
+                    if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg&& rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
 
-                    if (rulesObj.hasOwnProperty('email')) {
-                        scope.errMsg[iAttrs.ngModel] = validateFact.email(scope, iElem, iAttrs, rulesObj);
-                    } else if (rulesObj.hasOwnProperty('min')) {
-                        scope.errMsg[iAttrs.ngModel] = validateFact.min(scope, iElem, iAttrs, rulesObj);
-                    }
+                    //error message to scope
+                    scope.errMsg[iAttrs.ngModel] = errMsg;
 
                 }, 800);
 
@@ -286,6 +287,11 @@ module.exports = function () {
         min: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.hasMin(scope[iAttrs.ngModel], rulesObj.min[1]);
             return sendError(iElem, tf, rulesObj.min[0]);
+        },
+
+        max: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasMax(scope[iAttrs.ngModel], rulesObj.max[1]);
+            return sendError(iElem, tf, rulesObj.max[0]);
         }
 
 
@@ -344,9 +350,23 @@ module.exports = {
         'use strict';
         var tf;
         if (angular.isString(input)) { //when input is string count number of characters
-            tf = (input.length >= lim)
+            tf = (input.length >= lim);
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
-            tf = (input >= lim)
+            tf = (input >= lim);
+        }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    hasMax: function (input, lim) {
+        'use strict';
+        var tf;
+        if (angular.isString(input)) { //when input is string count number of characters
+            tf = (input.length <= lim);
+        } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
+            tf = (input <= lim);
         }
 
         return (input)

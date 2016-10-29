@@ -70,6 +70,11 @@ module.exports = function () {
         min: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.hasMin(scope[iAttrs.ngModel], rulesObj.min[1]);
             return sendError(iElem, tf, rulesObj.min[0]);
+        },
+
+        max: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasMax(scope[iAttrs.ngModel], rulesObj.max[1]);
+            return sendError(iElem, tf, rulesObj.max[0]);
         }
 
 

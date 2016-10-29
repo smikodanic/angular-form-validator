@@ -45,9 +45,23 @@ module.exports = {
         'use strict';
         var tf;
         if (angular.isString(input)) { //when input is string count number of characters
-            tf = (input.length >= lim)
+            tf = (input.length >= lim);
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
-            tf = (input >= lim)
+            tf = (input >= lim);
+        }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    hasMax: function (input, lim) {
+        'use strict';
+        var tf;
+        if (angular.isString(input)) { //when input is string count number of characters
+            tf = (input.length <= lim);
+        } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
+            tf = (input <= lim);
         }
 
         return (input)
