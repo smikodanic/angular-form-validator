@@ -144,6 +144,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg&& rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg&& rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -156,7 +157,6 @@ module.exports = function ($parse, $timeout, validateFact) {
 
             //** onBlur validators
             iElem.on('blur', function () {
-                console.log('blur');
                 $timeout(function () {
                     if (!errMsg && rulesObj.hasOwnProperty('required')) errMsg = validateFact.required(scope, iElem, iAttrs, rulesObj);
 
@@ -282,6 +282,11 @@ module.exports = function () {
         max: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.hasMax(scope[iAttrs.ngModel], rulesObj.max[1]);
             return sendError(iElem, tf, rulesObj.max[0]);
+        },
+
+        between: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isBetween(scope[iAttrs.ngModel], rulesObj.between[1]);
+            return sendError(iElem, tf, rulesObj.between[0]);
         }
 
 
@@ -362,7 +367,25 @@ module.exports = {
         return (input)
             ? tf
             : true; // return true if input is empty
+    },
+
+    isBetween: function (input, betweenArr) { //betweenArr = [3, 8]
+        'use strict';
+        var tf;
+        if (angular.isString(input)) { //when input is string count number of characters
+            tf = (input.length >= betweenArr[0] && input.length <= betweenArr[1]);
+        } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
+            tf = (input >= betweenArr[0] && input <= betweenArr[1]);
+        }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
+
+
+
+
 
 };
 

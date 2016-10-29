@@ -67,6 +67,24 @@ module.exports = {
         return (input)
             ? tf
             : true; // return true if input is empty
+    },
+
+    isBetween: function (input, betweenArr) { //betweenArr = [3, 8]
+        'use strict';
+        var tf;
+        if (angular.isString(input)) { //when input is string count number of characters
+            tf = (input.length >= betweenArr[0] && input.length <= betweenArr[1]);
+        } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
+            tf = (input >= betweenArr[0] && input <= betweenArr[1]);
+        }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
+
+
+
+
 
 };

@@ -75,6 +75,11 @@ module.exports = function () {
         max: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.hasMax(scope[iAttrs.ngModel], rulesObj.max[1]);
             return sendError(iElem, tf, rulesObj.max[0]);
+        },
+
+        between: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isBetween(scope[iAttrs.ngModel], rulesObj.between[1]);
+            return sendError(iElem, tf, rulesObj.between[0]);
         }
 
 

@@ -48,7 +48,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.qty}">
-				<label for="quantity" class="col-sm-3 control-label">* Quantity <small>(number onKeyup)</small></label>
+				<label for="quantity" class="col-sm-3 control-label">* Quantity <small>(number, required onKeyup)</small></label>
 				<div class="col-sm-5">
 					<input type="number" id="quantity" class="form-control"
 						ng-model="qty"
@@ -58,14 +58,14 @@
 				</div>
 			</div>
 
-			<div ng-class="{'form-group': true, 'has-error': errMsg.desc}">
-				<label for="description" class="col-sm-3 control-label">* Description <small>(number onKeyup)</small></label>
+			<div ng-class="{'form-group': true, 'has-error': errMsg.tken}">
+				<label for="description" class="col-sm-3 control-label">* Token <small>(number, required onKeyup)</small></label>
 				<div class="col-sm-5">
 					<textarea type="number" id="description" class="form-control"
-						ng-model="desc"
+						ng-model="tken"
 						ngform-validator="{type: 'number', required: 'Description field is required.'}"
 						ngform-validator-options="{validateOn: 'keyup'}"></textarea>
-					<p class="help-block" ng-cloak>{{errMsg.desc}}</p>
+					<p class="help-block" ng-cloak>{{errMsg.tken}}</p>
 				</div>
 			</div>
 
@@ -82,7 +82,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.reqd}">
-				<label for="reqd" class="col-sm-3 control-label">* Required <small>(number onChange)</small></label>
+				<label for="reqd" class="col-sm-3 control-label">* Required <small>(number, required onChange)</small></label>
 				<div class="col-sm-5">
 					<input type="Text" id="reqd" class="form-control"
 						ng-model="reqd"
@@ -98,7 +98,7 @@
 			<h4>MIN, MAX, BETWEEN VALIDATORS</h4>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.minstr}">
-				<label for="minstr" class="col-sm-4 control-label">Min string <small>(string onKeyup, min:3)</small></label>
+				<label for="minstr" class="col-sm-4 control-label">Min string <small>(string, min:3 onKeyup)</small></label>
 				<div class="col-sm-3">
 					<input type="text" id="minstr" class="form-control"
 						ng-model="minstr"
@@ -109,7 +109,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.minnum}">
-				<label for="minnum" class="col-sm-4 control-label">Min number <small>(string onKeyup, required, min:5)</small></label>
+				<label for="minnum" class="col-sm-4 control-label">Min number <small>(string, required, min:5 onKeyup)</small></label>
 				<div class="col-sm-3">
 					<input type="text" id="minnum" class="form-control"
 						ng-model="minnum"
@@ -120,7 +120,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.maxstr}">
-				<label for="maxstr" class="col-sm-4 control-label">Max string <small>(string onKeyup, max:3)</small></label>
+				<label for="maxstr" class="col-sm-4 control-label">Max string <small>(string, max:3 onKeyup)</small></label>
 				<div class="col-sm-3">
 					<input type="text" id="maxstr" class="form-control"
 						ng-model="maxstr"
@@ -131,7 +131,7 @@
 			</div>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.minmaxnum}">
-				<label for="minmaxnum" class="col-sm-4 control-label">Max Min number <small>(string onKeyup, min:3, max:5)</small></label>
+				<label for="minmaxnum" class="col-sm-4 control-label">Max Min number <small>(string, min:3, max:5 onKeyup)</small></label>
 				<div class="col-sm-3">
 					<input type="text" id="minmaxnum" class="form-control"
 						ng-model="minmaxnum"
@@ -146,6 +146,17 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.betweenstr}">
+				<label for="betweenstr" class="col-sm-4 control-label">Between string <small>(string, between:[3,5] onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="betweenstr" class="form-control"
+						ng-model="betweenstr"
+						ngform-validator="{type: 'string', between: ['The field must have 3-8 chars.', [3,8]]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.betweenstr}}</p>
+				</div>
+			</div>
+
 
 
 
@@ -153,7 +164,7 @@
 			<h4>OTHER VALIDATORS</h4>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.eml}">
-				<label for="eml" class="col-sm-3 control-label">Email <small>(string onKeyup)</small></label>
+				<label for="eml" class="col-sm-3 control-label">Email <small>(string, email onKeyup)</small></label>
 				<div class="col-sm-5">
 					<input type="text" id="eml" class="form-control"
 						ng-model="eml"
@@ -197,16 +208,21 @@
 
 		<h3>Ordinary HTML form</h3>
 		<form action="">
-			<label for="price">Price</label>
+			<label for="price">Price <small>(number, min:12.87 onKeyup)</small></label>
 			<input type="text" id="price"
 				ng-model="prc"
-				ngform-validator="{type: 'number'}"
+				ngform-validator="{type: 'number', min: ['Minimal price is $12.87', 12.87]}"
 				ngform-validator-options="{validateOn: 'keyup'}">
 			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.prc}}</span>
 
 		</form>
 
 	</div>
+
+
+	<br>
+	<br>
+	<br>
 
 
 

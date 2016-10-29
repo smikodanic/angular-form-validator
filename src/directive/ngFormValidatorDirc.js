@@ -83,6 +83,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg&& rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg&& rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -95,7 +96,6 @@ module.exports = function ($parse, $timeout, validateFact) {
 
             //** onBlur validators
             iElem.on('blur', function () {
-                console.log('blur');
                 $timeout(function () {
                     if (!errMsg && rulesObj.hasOwnProperty('required')) errMsg = validateFact.required(scope, iElem, iAttrs, rulesObj);
 

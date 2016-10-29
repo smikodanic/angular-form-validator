@@ -18,6 +18,8 @@ This is angular module which gives you angular directive for HTML form validatio
 - not dependant on any CSS framework (Bootstrap, Foundation, Material, ...etc) or any JS library like jQuery
 - 100% native angular
 
+It's not only validator but corrector. For example if you put type:'number' it will automatically convert string into JS number format.
+
 DEMO: [https://smikodanic.github.io/angular-form-validator/](https://smikodanic.github.io/angular-form-validator/)<br>
 DEMO CODE: [https://github.com/smikodanic/angular-form-validator/blob/master/index.html](https://github.com/smikodanic/angular-form-validator/blob/master/index.html)
 
