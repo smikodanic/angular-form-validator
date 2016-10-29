@@ -90,9 +90,9 @@ module.exports = function ($parse, $timeout, validateFact) {
 
                     if (rulesObj.hasOwnProperty('required')) {
                         scope.errMsg[iAttrs.ngModel] = validateFact.required(scope, iElem, iAttrs, rulesObj);
-                        // console.log(JSON.stringify(scope.errMsg, null, 2));
                     }
 
+                    // console.log(JSON.stringify(scope.errMsg, null, 2));
                 }, 1300);
             });
 

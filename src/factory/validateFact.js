@@ -1,6 +1,22 @@
 /*global angular*/
 var validationRules = require('../lib/validationRules');
 
+var sendError = function (iElem, tf, errorMessage) {
+    'use strict';
+
+    var err;
+    if (!tf) {
+        iElem.addClass('redborder');
+        err = errorMessage;
+    } else {
+        iElem.removeClass('redborder');
+        err = '';
+    }
+
+    return err;
+};
+
+
 module.exports = function () {
     'use strict';
 
@@ -10,20 +26,9 @@ module.exports = function () {
         type: {
 
             string: function (scope, iElem, iAttrs) {
-
                 var tf = validationRules.isString(scope[iAttrs.ngModel]);
                 // console.log(tf);
-
-
-                if (!tf) {
-                    iElem.addClass('redborder');
-                    err = 'Value must be in text format (string).';
-                } else {
-                    iElem.removeClass('redborder');
-                    err = '';
-                }
-
-                return err;
+                return sendError(iElem, tf, 'Value must be in text format (string).');
             },
 
             number: function (scope, iElem, iAttrs) {
@@ -33,17 +38,7 @@ module.exports = function () {
 
                 var tf = validationRules.isNumber(scope[iAttrs.ngModel]);
                 // console.log(tf);
-
-
-                if (!tf) {
-                    iElem.addClass('redborder');
-                    err = 'Value must be a number.';
-                } else {
-                    iElem.removeClass('redborder');
-                    err = '';
-                }
-
-                return err;
+                return sendError(iElem, tf, 'Value must be number.');
             },
 
 
@@ -58,32 +53,20 @@ module.exports = function () {
                 scope[iAttrs.ngModel] = dateCorrected || scope[iAttrs.ngModel];
 
                 var tf = validationRules.isDate(scope[iAttrs.ngModel]);
-
-                if (!tf) {
-                    iElem.addClass('redborder');
-                    err = 'Value must be a valid date.';
-                } else {
-                    iElem.removeClass('redborder');
-                    err = '';
-                }
-
-                return err;
+                return sendError(iElem, tf, 'Value must be valid date.');
             }
         },
 
 
         required: function (scope, iElem, iAttrs, rulesObj) {
             var tf = !!scope[iAttrs.ngModel]; //check if field is empty
+            return sendError(iElem, tf, rulesObj.required);
+        },
 
-            if (!tf) {
-                iElem.addClass('redborder');
-                err = rulesObj.required;
-            } else {
-                iElem.removeClass('redborder');
-                err = '';
-            }
-
-            return err;
+        email: function (scope, iElem, iAttrs, rulesObj) {
+            var re = /\S+@\S+\.\S+/;
+            var tf = re.test(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.email);
         }
 
 
