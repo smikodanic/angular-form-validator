@@ -167,6 +167,16 @@ module.exports = function () {
         float: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isFloat(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.float);
+        },
+
+
+        /* custom validator*/
+        custom: function (scope, iElem, iAttrs, customFunc) {
+
+            var errMsg = customFunc(scope[iAttrs.ngModel]);
+            var tf = !errMsg;
+
+            return sendError(iElem, tf, errMsg);
         }
 
 

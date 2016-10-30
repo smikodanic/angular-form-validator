@@ -330,6 +330,25 @@
 			</div>
 
 
+			<br><br>
+			<h4>CUSTOM VALIDATORS</h4>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.cstm}">
+				<label for="cstm" class="col-sm-5 control-label">3+ chars <small>(string, custom onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="cstm" class="form-control"
+						ng-model="cstm"
+						ngform-validator="{type: 'string'}"
+						ngform-validator-custom="function (input) {
+							var err = (input.length >= 3) ? '' : 'Inser 3+ characters!';
+							return err;
+						}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.cstm}}</p>
+				</div>
+			</div>
+
+
 
 
 

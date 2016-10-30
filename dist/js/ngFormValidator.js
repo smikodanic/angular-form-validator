@@ -1,5 +1,5 @@
 /*!
- *  v1.1.0 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.2.0 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
@@ -85,6 +85,14 @@ module.exports = function ($parse, $timeout, validateFact) {
             options = $parse(options)() || {validateOn: 'blur'}; //$parse converts string to object
 
 
+            //GET CUSTOM VALIDATOR FUNCTION
+            var customFunc;
+            if (iAttrs.ngformValidatorCustom) {
+                customFunc = eval('(' + iAttrs.ngformValidatorCustom + ')');
+                // console.log(customFunc);
+            }
+
+
 
             //DEFINE TYPE (string, number, date, boolean, objectId, mixed)
 
@@ -158,6 +166,8 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(scope, iElem, iAttrs, rulesObj);
+
+                    if (!errMsg && iAttrs.ngformValidatorCustom) errMsg = validateFact.custom(scope, iElem, iAttrs, customFunc);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -387,6 +397,16 @@ module.exports = function () {
         float: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isFloat(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.float);
+        },
+
+
+        /* custom validator*/
+        custom: function (scope, iElem, iAttrs, customFunc) {
+
+            var errMsg = customFunc(scope[iAttrs.ngModel]);
+            var tf = !errMsg;
+
+            return sendError(iElem, tf, errMsg);
         }
 
 

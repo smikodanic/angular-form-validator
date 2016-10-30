@@ -103,7 +103,32 @@ Config (rules and error messages) are defined inside **config** object.
 
 
 
-## 6. Options
+
+## 6. Custom validator
+Beside built-in validators you can use custom validators.
+Use attribute **ngform-validator-custom** and define function inside it.
+
+```html
+<div ng-class="{'form-group': true, 'has-error': errMsg.cstm}">
+	<label for="cstm" class="col-sm-5 control-label">3+ chars <small>(string, validate onKeyup)</small></label>
+		<div class="col-sm-5">
+			<input type="text" id="cstm" class="form-control"
+					ng-model="cstm"
+					ngform-validator="{type: 'string'}"
+					ngform-validator-custom="function (input) {
+						var err = (input.length >= 3) ? '' : 'Inser 3+ characters!';
+						return err;
+					}"
+					ngform-validator-options="{validateOn: 'keyup'}">
+			<p class="help-block" ng-cloak>{{errMsg.cstm}}</p>
+		</div>
+</div>
+```
+
+
+
+
+## 7. Options
 
 ```html
 ngform-validator-options="{validateOn: 'keyup'}"
@@ -116,7 +141,7 @@ ngform-validator-options="{validateOn: 'keyup'}"
 
 
 
-## 7. Disabling form fields and buttons
+## 8. Disabling form fields and buttons
 Submit button or input field can be disable on specific form field errors.
 
 ```html
@@ -126,7 +151,7 @@ Submit button or input field can be disable on specific form field errors.
 
 
 
-## 8. Reseting form
+## 9. Reseting form
 To reset whole form and clear all errors use **ngform-validator-reset** directive. Reset will be activted on click.
 
 ```html
@@ -136,7 +161,7 @@ To reset whole form and clear all errors use **ngform-validator-reset** directiv
 
 
 
-## 9. Licence
+## 10. Licence
 *Copyright (c) 2016 Saša Mikodanić*
 
 Licensed under [MIT](https://github.com/smikodanic/angular-form-validator/blob/master/LICENSE) .

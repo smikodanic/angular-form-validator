@@ -24,6 +24,14 @@ module.exports = function ($parse, $timeout, validateFact) {
             options = $parse(options)() || {validateOn: 'blur'}; //$parse converts string to object
 
 
+            //GET CUSTOM VALIDATOR FUNCTION
+            var customFunc;
+            if (iAttrs.ngformValidatorCustom) {
+                customFunc = eval('(' + iAttrs.ngformValidatorCustom + ')');
+                // console.log(customFunc);
+            }
+
+
 
             //DEFINE TYPE (string, number, date, boolean, objectId, mixed)
 
@@ -97,6 +105,8 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(scope, iElem, iAttrs, rulesObj);
+
+                    if (!errMsg && iAttrs.ngformValidatorCustom) errMsg = validateFact.custom(scope, iElem, iAttrs, customFunc);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
