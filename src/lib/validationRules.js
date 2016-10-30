@@ -110,6 +110,20 @@ module.exports = {
         return (input)
             ? tf
             : true; // return true if input is empty
+    },
+
+    enumTest: function (input, enumArr) {
+        'use strict';
+
+        var enumArrFiltered = enumArr.filter(function (elem) {
+            return (elem === input);
+        });
+
+        var tf = (enumArrFiltered.length !== 0);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
 
 

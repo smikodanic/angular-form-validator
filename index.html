@@ -210,15 +210,27 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.enm}">
+				<label for="enm" class="col-sm-5 control-label">Salutation: <small>(string, enum onChange)</small></label>
+				<div class="col-sm-2">
+					<input type="text" id="enm" class="form-control" placeholder="Mr. , Mrs. , Ms."
+						ng-model="enm"
+						ngform-validator="{type: 'string', enum: ['Only Mr. Mrs. or Mrs. is allowed to enter.', ['Mr.', 'Mrs.', 'Ms.']]}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.enm}}</p>
+				</div>
+			</div>
 
 
 
 
+
+			<div class="clearfix">&nbsp;</div><br><br>
 
 			<div class="form-group">
-				<div class="col-sm-2 col-sm-push-3">
+				<div class="col-sm-4 col-sm-push-3">
 					<button type="button" class="btn btn-primary" ng-click="mySubmit()" ng-disabled="errMsg.eml || errMsg.maxstr">Submit</button>
-					<button type="button" class="btn btn-warning" ngform-validator-reset>Reset</button>
+					<button type="button" class="btn btn-warning" ngform-validator-reset>Reset errors</button>
 
 				</div>
 			</div>

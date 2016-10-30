@@ -99,6 +99,11 @@ module.exports = function () {
         regex: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.regexTest(scope[iAttrs.ngModel], rulesObj.regex[1]);
             return sendError(iElem, tf, rulesObj.regex[0]);
+        },
+
+        enum: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.enumTest(scope[iAttrs.ngModel], rulesObj.enum[1]);
+            return sendError(iElem, tf, rulesObj.enum[0]);
         }
 
 

@@ -148,6 +148,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('emptySpaces')) errMsg = validateFact.emptySpaces(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('enum')) errMsg = validateFact.enum(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -309,6 +310,11 @@ module.exports = function () {
         regex: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.regexTest(scope[iAttrs.ngModel], rulesObj.regex[1]);
             return sendError(iElem, tf, rulesObj.regex[0]);
+        },
+
+        enum: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.enumTest(scope[iAttrs.ngModel], rulesObj.enum[1]);
+            return sendError(iElem, tf, rulesObj.enum[0]);
         }
 
 
@@ -430,6 +436,20 @@ module.exports = {
         'use strict';
         var regx = new RegExp(regxStr);
         var tf = (regx.test(input));
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    enumTest: function (input, enumArr) {
+        'use strict';
+
+        var enumArrFiltered = enumArr.filter(function (elem) {
+            return (elem === input);
+        });
+
+        var tf = (enumArrFiltered.length !== 0);
 
         return (input)
             ? tf
