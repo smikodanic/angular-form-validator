@@ -80,6 +80,8 @@ Config (rules and error messages) are defined inside **config** object.
 
 #### MISC
 - **email** - Validate inserted email
+- **sameAs** - compare two input fields (for example 'Password' and 'Repeat password')
+- **emptySpaces** - clear empty spaces in a string (validator and corrector)
 
 *(You are wellcome to make pull request and add extra validator functions.)*
 

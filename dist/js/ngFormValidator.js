@@ -145,6 +145,8 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('emptySpaces')) errMsg = validateFact.emptySpaces(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -287,7 +289,23 @@ module.exports = function () {
         between: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isBetween(scope[iAttrs.ngModel], rulesObj.between[1]);
             return sendError(iElem, tf, rulesObj.between[0]);
+        },
+
+        emptySpaces: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = !validationRules.hasEmptySpaces(scope[iAttrs.ngModel]);
+
+            //CORRECTOR: remove empty spaces from string
+            scope[iAttrs.ngModel] = scope[iAttrs.ngModel].replace(' ', '');
+
+            return sendError(iElem, tf, rulesObj.emptySpaces);
+        },
+
+        sameAs: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.areSame(scope[iAttrs.ngModel], scope[rulesObj.sameAs[1]]);
+            return sendError(iElem, tf, rulesObj.sameAs[0]);
         }
+
+
 
 
 
@@ -341,7 +359,7 @@ module.exports = {
 
     },
 
-    hasMin: function (input, lim) {
+    hasMin: function (input, lim) { // lim is Number
         'use strict';
         var tf;
         if (angular.isString(input)) { //when input is string count number of characters
@@ -355,7 +373,7 @@ module.exports = {
             : true; // return true if input is empty
     },
 
-    hasMax: function (input, lim) {
+    hasMax: function (input, lim) { // lim is Number
         'use strict';
         var tf;
         if (angular.isString(input)) { //when input is string count number of characters
@@ -377,6 +395,25 @@ module.exports = {
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
             tf = (input >= betweenArr[0] && input <= betweenArr[1]);
         }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    hasEmptySpaces: function (input) {
+        'use strict';
+        // var tf = (input.indexOf(' ') !== -1);
+        var tf = (/\s/g.test(input));
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    areSame: function (input, input2) { //compares input and input2
+        'use strict';
+        var tf = input === input2;
 
         return (input)
             ? tf

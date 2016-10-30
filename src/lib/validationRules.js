@@ -41,7 +41,7 @@ module.exports = {
 
     },
 
-    hasMin: function (input, lim) {
+    hasMin: function (input, lim) { // lim is Number
         'use strict';
         var tf;
         if (angular.isString(input)) { //when input is string count number of characters
@@ -55,7 +55,7 @@ module.exports = {
             : true; // return true if input is empty
     },
 
-    hasMax: function (input, lim) {
+    hasMax: function (input, lim) { // lim is Number
         'use strict';
         var tf;
         if (angular.isString(input)) { //when input is string count number of characters
@@ -77,6 +77,25 @@ module.exports = {
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
             tf = (input >= betweenArr[0] && input <= betweenArr[1]);
         }
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    hasEmptySpaces: function (input) {
+        'use strict';
+        // var tf = (input.indexOf(' ') !== -1);
+        var tf = (/\s/g.test(input));
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    areSame: function (input, input2) { //compares input and input2
+        'use strict';
+        var tf = input === input2;
 
         return (input)
             ? tf

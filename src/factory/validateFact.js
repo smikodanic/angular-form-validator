@@ -80,7 +80,23 @@ module.exports = function () {
         between: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isBetween(scope[iAttrs.ngModel], rulesObj.between[1]);
             return sendError(iElem, tf, rulesObj.between[0]);
+        },
+
+        emptySpaces: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = !validationRules.hasEmptySpaces(scope[iAttrs.ngModel]);
+
+            //CORRECTOR: remove empty spaces from string
+            scope[iAttrs.ngModel] = scope[iAttrs.ngModel].replace(' ', '');
+
+            return sendError(iElem, tf, rulesObj.emptySpaces);
+        },
+
+        sameAs: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.areSame(scope[iAttrs.ngModel], scope[rulesObj.sameAs[1]]);
+            return sendError(iElem, tf, rulesObj.sameAs[0]);
         }
+
+
 
 
 

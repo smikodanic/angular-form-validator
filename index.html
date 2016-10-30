@@ -164,7 +164,7 @@
 			<h4>OTHER VALIDATORS</h4>
 
 			<div ng-class="{'form-group': true, 'has-error': errMsg.eml}">
-				<label for="eml" class="col-sm-3 control-label">Email <small>(string, email onKeyup)</small></label>
+				<label for="eml" class="col-sm-5 control-label">Email <small>(string, email onKeyup)</small></label>
 				<div class="col-sm-5">
 					<input type="text" id="eml" class="form-control"
 						ng-model="eml"
@@ -172,6 +172,30 @@
 						ngform-validator="{{emlRules}}"
 						ngform-validator-options="{validateOn: 'keyup'}">
 					<p class="help-block" ng-cloak>{{errMsg.eml}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.passwd}">
+				<label for="passwd" class="col-sm-5 control-label">Password <small>(string, emptySpaces onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="passwd" class="form-control"
+						ng-model="passwd"
+						ng-init="passwdRules = {type: 'string', emptySpaces: 'Empty spaces are not allowed in password field.'}"
+						ngform-validator="{{passwdRules}}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.passwd}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.rpassswd}">
+				<label for="rpassswd" class="col-sm-5 control-label">Password repeat <small>(string, sameAs onChange)</small></label>
+				<div class="col-sm-3">
+					<input type="password" id="rpassswd" class="form-control"
+						ng-model="rpassswd"
+						ng-init="rpassswdRules = {type: 'string', sameAs: ['Not same as password.', 'passwd']}"
+						ngform-validator="{{rpassswdRules}}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.rpassswd}}</p>
 				</div>
 			</div>
 
