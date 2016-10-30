@@ -78,6 +78,16 @@ Config (rules and error messages) are defined inside **config** object.
 - **max** - If type:'number' then it will compare two numbers (input <= number). If type:'string' will validate number of characters.
 - **between** - If type:'number' (number1 <= input <= number2). If type:'string' will validate number of characters.
 
+#### STRING
+- **alpha** - letters only
+- **alphanumeric** - letters with numbers only (special characters are not allowed)
+- **lowercase** - letters must be lowercase, if not it will be converted automatically
+- **uppercase** - letters must be uppercase, if not it will be converted automatically
+
+#### NUMBER
+- **integer** - check if number is integer (52) and if not it will make correction
+- **float** - check if number is float (52.123) and if not it will make correction
+
 #### MISC
 - **email** - Validate inserted email (john@site.co)
 - **url** - check if input is valid URL (http://... or https://...)
@@ -87,6 +97,7 @@ Config (rules and error messages) are defined inside **config** object.
 - **regex** - test input against regular expression
 - **enum** - limit input string to offered values
 - **price** - must be Number (type:'Number'), round number to 2 decimals. This is corrector, not validator.
+
 
 *(You are wellcome to make pull request and add extra validator functions.)*
 

@@ -146,6 +146,28 @@ module.exports = {
             ? tf
             : true; // return true if input is empty
 
+    },
+
+    hasAlphaOnly: function (input) { //must have letters only (no numbers or special chars)
+        'use strict';
+        var re = new RegExp('^[a-zA-Z]+$');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    hasAlphanumericOnly: function (input) { //may include letters and numbers only (no special chars)
+        'use strict';
+        var re = new RegExp('^[a-zA-Z0-9]+$');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
     }
 
 

@@ -255,6 +255,28 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.al}">
+				<label for="al" class="col-sm-5 control-label">English letters only A-Z: <small>(string, alpha onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="al" class="form-control"
+						ng-model="al"
+						ngform-validator="{type: 'string', alpha: 'Numbers and spec. chars are not allowed.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.al}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.alnum}">
+				<label for="alnum" class="col-sm-5 control-label">No special chars: <small>(string, alphanumeric onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="alnum" class="form-control"
+						ng-model="alnum"
+						ngform-validator="{type: 'string', alphanumeric: 'Spec. chars are not allowed.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.alnum}}</p>
+				</div>
+			</div>
+
 
 
 

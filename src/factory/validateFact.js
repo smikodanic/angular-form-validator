@@ -119,6 +119,16 @@ module.exports = function () {
         tel: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isTel(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.tel);
+        },
+
+        alpha: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasAlphaOnly(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.alpha);
+        },
+
+        alphanumeric: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasAlphanumericOnly(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.alphanumeric);
         }
 
 

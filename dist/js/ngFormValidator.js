@@ -152,6 +152,8 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('enum')) errMsg = validateFact.enum(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('price')) errMsg = validateFact.price(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('alpha')) errMsg = validateFact.alpha(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -333,6 +335,16 @@ module.exports = function () {
         tel: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isTel(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.tel);
+        },
+
+        alpha: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasAlphaOnly(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.alpha);
+        },
+
+        alphanumeric: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.hasAlphanumericOnly(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.alphanumeric);
         }
 
 
@@ -488,6 +500,28 @@ module.exports = {
     isTel: function (input) {
         'use strict';
         var re = new RegExp('^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$', 'g');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    hasAlphaOnly: function (input) { //must have letters only (no numbers or special chars)
+        'use strict';
+        var re = new RegExp('^[a-zA-Z]+$');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    hasAlphanumericOnly: function (input) { //may include letters and numbers only (no special chars)
+        'use strict';
+        var re = new RegExp('^[a-zA-Z0-9]+$');
         var tf = re.test(input);
 
         return (input)
