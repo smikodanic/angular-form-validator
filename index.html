@@ -159,6 +159,80 @@
 
 
 
+			<br><br>
+			<h4>STRING</h4>
+			<div ng-class="{'form-group': true, 'has-error': errMsg.al}">
+				<label for="al" class="col-sm-5 control-label">English letters only A-Z: <small>(string, alpha onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="al" class="form-control"
+						ng-model="al"
+						ngform-validator="{type: 'string', alpha: 'Numbers and spec. chars are not allowed.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.al}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.alnum}">
+				<label for="alnum" class="col-sm-5 control-label">No special chars: <small>(string, alphanumeric onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="alnum" class="form-control"
+						ng-model="alnum"
+						ngform-validator="{type: 'string', alphanumeric: 'Spec. chars are not allowed.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.alnum}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.lwer}">
+				<label for="lwer" class="col-sm-5 control-label">Lowercase: <small>(string, lowercase onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="lwer" class="form-control"
+						ng-model="lwer"
+						ngform-validator="{type: 'string', lowercase: 'Use lowercase letters only.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.lwer}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.uppr}">
+				<label for="uppr" class="col-sm-5 control-label">Uppercase: <small>(string, uppercase onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="uppr" class="form-control"
+						ng-model="uppr"
+						ngform-validator="{type: 'string', uppercase: 'Use uppercase letters only.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.uppr}}</p>
+				</div>
+			</div>
+
+
+			<br><br>
+			<h4>NUMBERS</h4>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.numInt}">
+				<label for="numInt" class="col-sm-5 control-label">Integer number: <small>(number, int onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="numInt" class="form-control"
+						ng-model="numInt"
+						ngform-validator="{type: 'number', int: 'Only integer will be accepted.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.numInt}}</p>
+				</div>
+			</div>
+
+			<div ng-class="{'form-group': true, 'has-error': errMsg.numFloat}">
+				<label for="numFloat" class="col-sm-5 control-label">Float number: <small>(number, float onChange)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="numFloat" class="form-control"
+						ng-model="numFloat"
+						ngform-validator="{type: 'number', float: 'Only float number will be accepted.'}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.numFloat}}</p>
+				</div>
+			</div>
+
+
+
 
 			<br><br>
 			<h4>OTHER VALIDATORS</h4>
@@ -256,51 +330,7 @@
 			</div>
 
 
-			<br><br>
-			<h3>STRING</h3>
-			<div ng-class="{'form-group': true, 'has-error': errMsg.al}">
-				<label for="al" class="col-sm-5 control-label">English letters only A-Z: <small>(string, alpha onKeyup)</small></label>
-				<div class="col-sm-3">
-					<input type="text" id="al" class="form-control"
-						ng-model="al"
-						ngform-validator="{type: 'string', alpha: 'Numbers and spec. chars are not allowed.'}"
-						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.al}}</p>
-				</div>
-			</div>
 
-			<div ng-class="{'form-group': true, 'has-error': errMsg.alnum}">
-				<label for="alnum" class="col-sm-5 control-label">No special chars: <small>(string, alphanumeric onKeyup)</small></label>
-				<div class="col-sm-3">
-					<input type="text" id="alnum" class="form-control"
-						ng-model="alnum"
-						ngform-validator="{type: 'string', alphanumeric: 'Spec. chars are not allowed.'}"
-						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.alnum}}</p>
-				</div>
-			</div>
-
-			<div ng-class="{'form-group': true, 'has-error': errMsg.lwer}">
-				<label for="lwer" class="col-sm-5 control-label">Lowercase: <small>(string, lowercase onKeyup)</small></label>
-				<div class="col-sm-3">
-					<input type="text" id="lwer" class="form-control"
-						ng-model="lwer"
-						ngform-validator="{type: 'string', lowercase: 'Use lowercase letters only.'}"
-						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.lwer}}</p>
-				</div>
-			</div>
-
-			<div ng-class="{'form-group': true, 'has-error': errMsg.uppr}">
-				<label for="uppr" class="col-sm-5 control-label">Uppercase: <small>(string, uppercase onKeyup)</small></label>
-				<div class="col-sm-3">
-					<input type="text" id="uppr" class="form-control"
-						ng-model="uppr"
-						ngform-validator="{type: 'string', uppercase: 'Use uppercase letters only.'}"
-						ngform-validator-options="{validateOn: 'keyup'}">
-					<p class="help-block" ng-cloak>{{errMsg.uppr}}</p>
-				</div>
-			</div>
 
 
 

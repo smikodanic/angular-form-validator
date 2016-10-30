@@ -157,6 +157,16 @@ module.exports = function () {
             }
 
             return sendError(iElem, tf, rulesObj.uppercase);
+        },
+
+        int: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isInteger(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.int);
+        },
+
+        float: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isFloat(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.float);
         }
 
 

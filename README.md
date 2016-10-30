@@ -85,7 +85,7 @@ Config (rules and error messages) are defined inside **config** object.
 - **uppercase** - letters must be uppercase, if not it will be converted automatically
 
 #### NUMBER
-- **integer** - check if number is integer (52) and if not it will make correction
+- **int** - check if number is integer (52) and if not it will make correction
 - **float** - check if number is float (52.123) and if not it will make correction
 
 #### MISC

@@ -156,6 +156,8 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('lowercase')) errMsg = validateFact.lowercase(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -375,6 +377,16 @@ module.exports = function () {
             }
 
             return sendError(iElem, tf, rulesObj.uppercase);
+        },
+
+        int: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isInteger(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.int);
+        },
+
+        float: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isFloat(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.float);
         }
 
 
@@ -580,6 +592,20 @@ module.exports = {
             ? tf
             : true; // return true if input is empty
 
+    },
+
+    isInteger: function (input) {
+        'use strict';
+        var tf = Number.isInteger(input);
+
+        return tf;
+    },
+
+    isFloat: function (input) {
+        'use strict';
+        var tf = (input % 1 !== 0);
+
+        return tf;
     }
 
 

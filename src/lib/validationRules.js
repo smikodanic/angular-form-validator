@@ -190,6 +190,20 @@ module.exports = {
             ? tf
             : true; // return true if input is empty
 
+    },
+
+    isInteger: function (input) {
+        'use strict';
+        var tf = Number.isInteger(input);
+
+        return tf;
+    },
+
+    isFloat: function (input) {
+        'use strict';
+        var tf = (input % 1 !== 0);
+
+        return tf;
     }
 
 
