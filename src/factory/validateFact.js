@@ -104,6 +104,11 @@ module.exports = function () {
         enum: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.enumTest(scope[iAttrs.ngModel], rulesObj.enum[1]);
             return sendError(iElem, tf, rulesObj.enum[0]);
+        },
+
+        url: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isUrl(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.url);
         }
 
 

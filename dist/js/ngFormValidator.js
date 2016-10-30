@@ -1,5 +1,5 @@
 /*!
- *  v1.0.0 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.1.0 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
@@ -142,6 +142,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     //validator synch chain
                     errMsg = validateFact.type[type](scope, iElem, iAttrs);
                     if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('url')) errMsg = validateFact.url(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
@@ -315,6 +316,11 @@ module.exports = function () {
         enum: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.enumTest(scope[iAttrs.ngModel], rulesObj.enum[1]);
             return sendError(iElem, tf, rulesObj.enum[0]);
+        },
+
+        url: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isUrl(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.url);
         }
 
 
@@ -454,8 +460,18 @@ module.exports = {
         return (input)
             ? tf
             : true; // return true if input is empty
-    }
+    },
 
+    isUrl: function (input) {
+        'use strict';
+        var re = new RegExp('(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    }
 
 
 

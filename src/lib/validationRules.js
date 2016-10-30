@@ -124,8 +124,18 @@ module.exports = {
         return (input)
             ? tf
             : true; // return true if input is empty
-    }
+    },
 
+    isUrl: function (input) {
+        'use strict';
+        var re = new RegExp('(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    }
 
 
 

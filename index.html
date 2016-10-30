@@ -222,6 +222,18 @@
 			</div>
 
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.web}">
+				<label for="web" class="col-sm-5 control-label">Website: <small>(string, url onChange)</small></label>
+				<div class="col-sm-4">
+					<input type="text" id="web" class="form-control" placeholder="example: https://ads.com/product/tech/?q=cars"
+						ng-model="web"
+						ngform-validator="{type: 'string', url: 'Website\'s URL is not correct.'}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.web}}</p>
+				</div>
+			</div>
+
+
 
 
 

@@ -84,6 +84,7 @@ Config (rules and error messages) are defined inside **config** object.
 - **emptySpaces** - clear empty spaces in a string (validator and corrector)
 - **regex** - test input against regular expression
 - **enum** - limit input string to offered values
+- **url** - check if input is valid URL
 
 *(You are wellcome to make pull request and add extra validator functions.)*
 
