@@ -116,7 +116,7 @@ Use attribute **ngform-validator-custom** and define function inside it.
 					ng-model="cstm"
 					ngform-validator="{type: 'string'}"
 					ngform-validator-custom="function (input) {
-						var err = (input.length >= 3) ? '' : 'Inser 3+ characters!';
+						var err = (input.length >= 3) ? '' : 'Insert 3+ characters!';
 						return err;
 					}"
 					ngform-validator-options="{validateOn: 'keyup'}">
