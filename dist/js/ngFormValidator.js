@@ -154,6 +154,8 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('price')) errMsg = validateFact.price(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('alpha')) errMsg = validateFact.alpha(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('lowercase')) errMsg = validateFact.lowercase(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -345,6 +347,34 @@ module.exports = function () {
         alphanumeric: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.hasAlphanumericOnly(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.alphanumeric);
+        },
+
+        lowercase: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.allLowercase(scope[iAttrs.ngModel]);
+
+            //CORRECTOR: lowercase input
+            if (!tf) {
+                setTimeout(function () {
+                    scope[iAttrs.ngModel] = scope[iAttrs.ngModel].toLowerCase();
+                    scope.$apply();
+                }, 1300);
+            }
+
+            return sendError(iElem, tf, rulesObj.lowercase);
+        },
+
+        uppercase: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.allUppercase(scope[iAttrs.ngModel]);
+
+            //CORRECTOR: uppercase input
+            if (!tf) {
+                setTimeout(function () {
+                    scope[iAttrs.ngModel] = scope[iAttrs.ngModel].toUpperCase();
+                    scope.$apply();
+                }, 1300);
+            }
+
+            return sendError(iElem, tf, rulesObj.uppercase);
         }
 
 
@@ -523,6 +553,28 @@ module.exports = {
         'use strict';
         var re = new RegExp('^[a-zA-Z0-9]+$');
         var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    allLowercase: function (input) { //may include letters and numbers only (no special chars)
+        'use strict';
+        var inputLowered = input.toLowerCase();
+        var tf = (inputLowered === input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    allUppercase: function (input) { //may include letters and numbers only (no special chars)
+        'use strict';
+        var inputUppered = input.toUpperCase();
+        var tf = (inputUppered === input);
 
         return (input)
             ? tf

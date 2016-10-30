@@ -168,6 +168,28 @@ module.exports = {
             ? tf
             : true; // return true if input is empty
 
+    },
+
+    allLowercase: function (input) { //may include letters and numbers only (no special chars)
+        'use strict';
+        var inputLowered = input.toLowerCase();
+        var tf = (inputLowered === input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    allUppercase: function (input) { //may include letters and numbers only (no special chars)
+        'use strict';
+        var inputUppered = input.toUpperCase();
+        var tf = (inputUppered === input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
     }
 
 

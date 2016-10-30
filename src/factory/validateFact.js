@@ -129,6 +129,34 @@ module.exports = function () {
         alphanumeric: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.hasAlphanumericOnly(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.alphanumeric);
+        },
+
+        lowercase: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.allLowercase(scope[iAttrs.ngModel]);
+
+            //CORRECTOR: lowercase input
+            if (!tf) {
+                setTimeout(function () {
+                    scope[iAttrs.ngModel] = scope[iAttrs.ngModel].toLowerCase();
+                    scope.$apply();
+                }, 1300);
+            }
+
+            return sendError(iElem, tf, rulesObj.lowercase);
+        },
+
+        uppercase: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.allUppercase(scope[iAttrs.ngModel]);
+
+            //CORRECTOR: uppercase input
+            if (!tf) {
+                setTimeout(function () {
+                    scope[iAttrs.ngModel] = scope[iAttrs.ngModel].toUpperCase();
+                    scope.$apply();
+                }, 1300);
+            }
+
+            return sendError(iElem, tf, rulesObj.uppercase);
         }
 
 
