@@ -94,6 +94,11 @@ module.exports = function () {
         sameAs: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.areSame(scope[iAttrs.ngModel], scope[rulesObj.sameAs[1]]);
             return sendError(iElem, tf, rulesObj.sameAs[0]);
+        },
+
+        regex: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.regexTest(scope[iAttrs.ngModel], rulesObj.regex[1]);
+            return sendError(iElem, tf, rulesObj.regex[0]);
         }
 
 

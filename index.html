@@ -199,6 +199,17 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.regx}">
+				<label for="regx" class="col-sm-5 control-label">Capital letters only: <small>(string, regex onKeyup)</small></label>
+				<div class="col-sm-5">
+					<input type="text" id="regx" class="form-control"
+						ng-model="regx"
+						ngform-validator="{type: 'string', regex: ['Only capital letters are allowed.', '^[A-Z]+$']}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.regx}}</p>
+				</div>
+			</div>
+
 
 
 

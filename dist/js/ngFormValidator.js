@@ -147,6 +147,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('emptySpaces')) errMsg = validateFact.emptySpaces(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -303,6 +304,11 @@ module.exports = function () {
         sameAs: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.areSame(scope[iAttrs.ngModel], scope[rulesObj.sameAs[1]]);
             return sendError(iElem, tf, rulesObj.sameAs[0]);
+        },
+
+        regex: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.regexTest(scope[iAttrs.ngModel], rulesObj.regex[1]);
+            return sendError(iElem, tf, rulesObj.regex[0]);
         }
 
 
@@ -414,6 +420,16 @@ module.exports = {
     areSame: function (input, input2) { //compares input and input2
         'use strict';
         var tf = input === input2;
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+    },
+
+    regexTest: function (input, regxStr) {
+        'use strict';
+        var regx = new RegExp(regxStr);
+        var tf = (regx.test(input));
 
         return (input)
             ? tf

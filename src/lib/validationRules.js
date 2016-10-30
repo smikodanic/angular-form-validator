@@ -100,6 +100,16 @@ module.exports = {
         return (input)
             ? tf
             : true; // return true if input is empty
+    },
+
+    regexTest: function (input, regxStr) {
+        'use strict';
+        var regx = new RegExp(regxStr);
+        var tf = (regx.test(input));
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
 
 

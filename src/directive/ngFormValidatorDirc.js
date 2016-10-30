@@ -86,6 +86,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('emptySpaces')) errMsg = validateFact.emptySpaces(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
