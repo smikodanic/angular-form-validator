@@ -233,6 +233,17 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.cena}">
+				<label for="cena" class="col-sm-5 control-label">Price ($): <small>(number, price onChange)</small></label>
+				<div class="col-sm-2">
+					<input type="text" id="cena" class="form-control"
+						ng-model="cena"
+						ngform-validator="{type: 'number', price: ''}"
+						ngform-validator-options="{validateOn: 'change'}">
+					<p class="help-block" ng-cloak>{{errMsg.cena}}</p>
+				</div>
+			</div>
+
 
 
 

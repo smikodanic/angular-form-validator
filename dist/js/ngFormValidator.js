@@ -150,6 +150,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('enum')) errMsg = validateFact.enum(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('price')) errMsg = validateFact.price(scope, iElem, iAttrs, rulesObj);
 
                     //error message to scope
                     scope.errMsg[iAttrs.ngModel] = errMsg;
@@ -321,6 +322,11 @@ module.exports = function () {
         url: function (scope, iElem, iAttrs, rulesObj) {
             var tf = validationRules.isUrl(scope[iAttrs.ngModel]);
             return sendError(iElem, tf, rulesObj.url);
+        },
+
+        price: function (scope, iElem, iAttrs, rulesObj) {
+            //correct number to 2 decimal points
+            scope[iAttrs.ngModel] = parseFloat(scope[iAttrs.ngModel]).toFixed(2);
         }
 
 

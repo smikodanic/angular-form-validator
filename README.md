@@ -85,6 +85,7 @@ Config (rules and error messages) are defined inside **config** object.
 - **regex** - test input against regular expression
 - **enum** - limit input string to offered values
 - **url** - check if input is valid URL
+- **price** - must be Number (type:'Number'), round number to 2 decimals
 
 *(You are wellcome to make pull request and add extra validator functions.)*
 
