@@ -135,6 +135,17 @@ module.exports = {
             ? tf
             : true; // return true if input is empty
 
+    },
+
+    isTel: function (input) {
+        'use strict';
+        var re = new RegExp('^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$', 'g');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
     }
 
 

@@ -114,6 +114,11 @@ module.exports = function () {
         price: function (scope, iElem, iAttrs, rulesObj) {
             //correct number to 2 decimal points
             scope[iAttrs.ngModel] = parseFloat(scope[iAttrs.ngModel]).toFixed(2);
+        },
+
+        tel: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isTel(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.tel);
         }
 
 

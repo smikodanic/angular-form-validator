@@ -79,13 +79,14 @@ Config (rules and error messages) are defined inside **config** object.
 - **between** - If type:'number' (number1 <= input <= number2). If type:'string' will validate number of characters.
 
 #### MISC
-- **email** - Validate inserted email
+- **email** - Validate inserted email (john@site.co)
+- **url** - check if input is valid URL (http://... or https://...)
+- **tel** - check if input is valid phone number ((123) 456-7890, +(123) 456-7890, 123-456-7890, 123.456.7890, 1234567890, +31636363634, 075-63546725)
 - **sameAs** - compare two input fields (for example 'Password' and 'Repeat password')
 - **emptySpaces** - clear empty spaces in a string (validator and corrector)
 - **regex** - test input against regular expression
 - **enum** - limit input string to offered values
-- **url** - check if input is valid URL
-- **price** - must be Number (type:'Number'), round number to 2 decimals
+- **price** - must be Number (type:'Number'), round number to 2 decimals. This is corrector, not validator.
 
 *(You are wellcome to make pull request and add extra validator functions.)*
 

@@ -244,6 +244,16 @@
 				</div>
 			</div>
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.phone}">
+				<label for="phone" class="col-sm-5 control-label">Phone: <small>(string, tel onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="phone" class="form-control"
+						ng-model="phone"
+						ngform-validator="{type: 'string', tel: 'Not valid phone format.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.phone}}</p>
+				</div>
+			</div>
 
 
 

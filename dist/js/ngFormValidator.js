@@ -143,6 +143,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     errMsg = validateFact.type[type](scope, iElem, iAttrs);
                     if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('url')) errMsg = validateFact.url(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('tel')) errMsg = validateFact.tel(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
@@ -327,6 +328,11 @@ module.exports = function () {
         price: function (scope, iElem, iAttrs, rulesObj) {
             //correct number to 2 decimal points
             scope[iAttrs.ngModel] = parseFloat(scope[iAttrs.ngModel]).toFixed(2);
+        },
+
+        tel: function (scope, iElem, iAttrs, rulesObj) {
+            var tf = validationRules.isTel(scope[iAttrs.ngModel]);
+            return sendError(iElem, tf, rulesObj.tel);
         }
 
 
@@ -471,6 +477,17 @@ module.exports = {
     isUrl: function (input) {
         'use strict';
         var re = new RegExp('(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})');
+        var tf = re.test(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
+
+    },
+
+    isTel: function (input) {
+        'use strict';
+        var re = new RegExp('^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$', 'g');
         var tf = re.test(input);
 
         return (input)
