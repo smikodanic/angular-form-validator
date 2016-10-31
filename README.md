@@ -159,10 +159,26 @@ To reset whole form and clear all errors use **ngform-validator-reset** directiv
 <button type="button" class="btn btn-warning" ngform-validator-reset>Reset</button>
 ```
 
+## 10. Multilevel scope objects
+Scope object can have up to 5 levels, like
+**ng-model="europe.company.employers.developers.name"** .
+
+DEMO: [https://smikodanic.github.io/angular-form-validator/index2.html](https://smikodanic.github.io/angular-form-validator/index2.html)<br>
+DEMO CODE: [https://github.com/smikodanic/angular-form-validator/blob/master/index2.html](https://github.com/smikodanic/angular-form-validator/blob/master/index2.html)
 
 
 
-## 10. Licence
+```html
+//code example
+<input type="text" size="21"
+	ng-model="eu.germany.company.employer.email"
+	ngform-validator="{type: 'string', email: 'Email is not valid.'}"
+	ngform-validator-options="{validateOn: 'keyup'}">
+<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.eu.germany.company.employer.email}}</span>
+```
+
+
+## 11. Licence
 *Copyright (c) 2016 Saša Mikodanić*
 
 Licensed under [MIT](https://github.com/smikodanic/angular-form-validator/blob/master/LICENSE) .
