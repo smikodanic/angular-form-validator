@@ -1,43 +1,14 @@
 /*!
- *  v1.2.0 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.3.0 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
 
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-exports = module.exports = stringify
-exports.getSerialize = serializer
-
-function stringify(obj, replacer, spaces, cycleReplacer) {
-  return JSON.stringify(obj, serializer(replacer, cycleReplacer), spaces)
-}
-
-function serializer(replacer, cycleReplacer) {
-  var stack = [], keys = []
-
-  if (cycleReplacer == null) cycleReplacer = function(key, value) {
-    if (stack[0] === value) return "[Circular ~]"
-    return "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
-  }
-
-  return function(key, value) {
-    if (stack.length > 0) {
-      var thisPos = stack.indexOf(this)
-      ~thisPos ? stack.splice(thisPos + 1) : stack.push(this)
-      ~thisPos ? keys.splice(thisPos, Infinity, key) : keys.push(key)
-      if (~stack.indexOf(value)) value = cycleReplacer.call(this, key, value)
-    }
-    else stack.push(value)
-
-    return replacer == null ? value : replacer.call(this, key, value)
-  }
-}
-
-},{}],2:[function(require,module,exports){
 /**
  * Controller: 'NgFormValidatorCtrl'
  */
-var stringify = require('json-stringify-safe');
+// var stringify = require('json-stringify-safe');
 
 
 module.exports = function ($scope, $element, $attrs, $timeout) {
@@ -58,7 +29,7 @@ module.exports = function ($scope, $element, $attrs, $timeout) {
 
 };
 
-},{"json-stringify-safe":1}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 /*global angular*/
 // var stringify = require('json-stringify-safe');
 
@@ -200,7 +171,7 @@ module.exports = function ($parse, $timeout, validateFact) {
 
 };
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /*global angular*/
 // var stringify = require('json-stringify-safe');
 
@@ -227,7 +198,7 @@ module.exports = function () {
     return directiveObj;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*global angular*/
 var validationRules = require('../lib/validationRules');
 
@@ -419,7 +390,7 @@ module.exports = function () {
 
 };
 
-},{"../lib/validationRules":6}],6:[function(require,module,exports){
+},{"../lib/validationRules":5}],5:[function(require,module,exports){
 /*global angular*/
 module.exports = {
     isString: function (input) {
@@ -633,7 +604,7 @@ module.exports = {
 
 };
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*global angular, window*/
 
 var ngFormValidator = angular.module('ngFormValidator', []);
@@ -656,4 +627,4 @@ module.exports = ngFormValidator;
 */
 window.ngFormValidator = ngFormValidator;
 
-},{"./controller/ngFormValidatorCtrl":2,"./directive/ngFormValidatorDirc":3,"./directive/ngFormValidatorResetDirc":4,"./factory/validateFact":5}]},{},[7]);
+},{"./controller/ngFormValidatorCtrl":1,"./directive/ngFormValidatorDirc":2,"./directive/ngFormValidatorResetDirc":3,"./factory/validateFact":4}]},{},[6]);
