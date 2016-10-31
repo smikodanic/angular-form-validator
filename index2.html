@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>angular-form-validator Examples 2</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./dist/css/ngFormValidator.css">
+
+</head>
+
+<body ng-app="ngFormValidator" style="padding-top:25px">
+
+	<div class="container" ng-controller="NgFormValidatorCtrl">
+
+		<!-- bootstrap form -->
+		<h3>MULTILEVEL SCOPE OBJECT</h3>
+		Examples where ngModel is defined with multilevel objects, for example <b>ng-model="animals.sea.dolphins.name</b>.
+
+		<br><br>
+
+		<form action="#" method="POST" enctype="application/x-www-form-urlencoded" class="form-horizontal">
+
+
+			<p>One level scope object: ng-model='fname'</p>
+			<div ng-class="{'form-group': true, 'has-error': errMsg.fname}">
+				<label for="fname" class="col-sm-4 control-label">First name <small>(string, min:2 onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="fname" class="form-control"
+						ng-model="fname"
+						ngform-validator="{type: 'string', min: ['The field must have min 2 chars.', 2]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.fname}}</p>
+				</div>
+			</div>
+
+
+			<p>Two level scope object: ng-model='users.second_name'</p>
+			<div ng-class="{'form-group': true, 'has-error': errMsg.users.second_name}">
+				<label for="second_name" class="col-sm-4 control-label">Second name <small>(string, min:2 onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="second_name" class="form-control"
+						ng-model="users.second_name"
+						ngform-validator="{type: 'string', min: ['The field must have min 2 chars.', 2]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.users.second_name}}</p>
+				</div>
+			</div>
+
+			<br><br>
+			<p>Three level scope object: ng-model='people.workers.name'</p>
+			<div ng-class="{'form-group': true, 'has-error': errMsg.people.worker.name}">
+				<label for="worker" class="col-sm-4 control-label">Worker <small>(string, min:2 onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="worker" class="form-control"
+						ng-model="people.worker.name"
+						ngform-validator="{type: 'string', min: ['The field must have min 2 chars.', 2]}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.people.worker.name}}</p>
+				</div>
+			</div>
+
+		</form>
+
+
+
+
+
+		<br>
+		<br>
+		<br>
+		<h3>Ordinary HTML form</h3>
+
+		<form action="">
+
+			<label>String <small>(string onKeyup)</small></label>
+			<input type="number"
+				ng-model="europe.company.users.string"
+				ngform-validator="{type: 'string'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.europe.company.users.string}}</span>
+
+			<br><br>
+			<label>Number <small>(number onKeyup)</small></label>
+			<input type="text"
+				ng-model="europe.company.users.count.number"
+				ngform-validator="{type: 'number'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.europe.company.users.count.number}}</span>
+
+			<br><br>
+			<label>Date <small>(date onChange)</small></label>
+			<input type="text" size="55"
+				ng-model="usa.company.dat"
+				ngform-validator="{type: 'date'}"
+				ngform-validator-options="{validateOn: 'change'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.usa.company.dat}}</span>
+
+			<br><br>
+			<label>* Required <small>(string, required onBlur)</small></label>
+			<input type="text" size="55"
+				ng-model="eu.croatia.company.name"
+				ngform-validator="{type: 'string', required: 'This field is required.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.eu.croatia.company.name}}</span>
+
+			<br><br>
+			<label>Email <small>(string, email onKeyup)</small></label>
+			<input type="text" size="21"
+				ng-model="eu.croatia.company.guru.email"
+				ngform-validator="{type: 'string', email: 'Email is not valid.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.eu.croatia.company.guru.email}}</span>
+
+			<br><br>
+			<label>Min Max <small>(string, min:3, max:5 onKeyup)</small></label>
+			<input type="text"
+				ng-model="eu.germany.company.txt"
+				ngform-validator="{
+					type: 'string',
+					min: ['Enter min 3 chars.', 3],
+					max: ['Max allowed 5 chars.', 5]
+				}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.eu.germany.company.txt}}</span>
+
+			<br><br>
+			<label>Between <small>(number, between onKeyup)</small></label>
+			<!-- This INPUT will be converted to type="number" automatically when user types-->
+			<input type="number" size="21"
+				ng-model="my.num"
+				ngform-validator="{type: 'number', between: ['Number must be between 3 and 8.', [3,8]]}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.my.num}}</span>
+
+			<br><br>
+			<label>Emptyspaces <small>(string, emptyspaces onKeyup)</small></label>
+			<input type="text" size="21"
+				ng-model="eu.croatia.company.guru.empt"
+				ngform-validator="{type: 'string', emptySpaces: 'Empty spaces are not allowed in password field.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.eu.croatia.company.guru.empt}}</span>
+
+
+			<br><br>
+			<label>Password</label>
+			<input type="text" size="21"
+				ng-model="users.my.pass">
+			<br>
+			<label>Password SameAs <small>(string, sameAs:users.pass onBlur)</small></label>
+			<input type="text" size="21"
+				ng-model="users.pass_again"
+				ngform-validator="{type: 'string', sameAs: ['Not same as password.', 'users.my.pass']}"
+				ngform-validator-options="{validateOn: 'blur'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.pass_again}}</span>
+
+
+			<br><br>
+			<label>Regex <small>(string, regex:/\d/ onKeyup)</small></label>
+			<input type="text" size="21"
+				ng-model="smth.digits.only"
+				ngform-validator="{type: 'string', regex: ['Only digits are allowed.', '^[0-9]+$']}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.smth.digits.only}}</span>
+
+
+			<br><br>
+			<label>Enum <small>(string, enum onKeyup)</small></label>
+			<input type="text"  placeholder="Mr. , Mrs."
+				ng-model="company.developers.salutation"
+				ngform-validator="{type: 'string', enum: ['Only Mr. Mrs. is allowed to enter.', ['Mr.', 'Mrs.']]}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.company.developers.salutation}}</span>
+
+
+			<br><br>
+			<label>Url <small>(string, url onKeyup)</small></label>
+			<input type="text" size="34" placeholder="https://"
+				ng-model="company.developers.website.url"
+				ngform-validator="{type: 'string', url: 'Not valid URL.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.company.developers.website.url}}</span>
+
+
+			<br><br>
+			<label>Price <small>(number, price onChange)</small></label>
+			<input type="text" placeholder="1234.25"
+				ng-model="product.price"
+				ngform-validator="{type: 'number', price: ''}"
+				ngform-validator-options="{validateOn: 'change'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.product.price}}</span>
+
+
+			<br><br>
+			<label>Tel <small>(string, tel onKeyup)</small></label>
+			<input type="text"
+				ng-model="users.phone"
+				ngform-validator="{type: 'string', tel: 'Not valid phone number.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.phone}}</span>
+
+			<br><br>
+			<label>Alpha <small>(string, alpha onKeyup)</small></label>
+			<input type="text"
+				ng-model="users.text.only"
+				ngform-validator="{type: 'string', alpha: 'Must be text only (no numbers or spec.chars.).'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.text.only}}</span>
+
+			<br><br>
+			<label>Alphanumeric <small>(string, alphanumeric onKeyup)</small></label>
+			<input type="text"
+				ng-model="users.text.and.numbers.only"
+				ngform-validator="{type: 'string', alphanumeric: 'Don\'t enter special characters.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.text.and.numbers.only}}</span>
+
+			<br><br>
+			<label>Lowercase <small>(string, lowercase onKeyup)</small></label>
+			<input type="text"
+				ng-model="users.advert.lowercased"
+				ngform-validator="{type: 'string', lowercase: 'Use lowercase letters.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.advert.lowercased}}</span>
+
+			<br><br>
+			<label>Uppercase <small>(string, uppercase onKeyup)</small></label>
+			<input type="text"
+				ng-model="users.advert.uppercased"
+				ngform-validator="{type: 'string', uppercase: 'Use uppercase letters.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.advert.uppercased}}</span>
+
+			<br><br>
+			<label>Int <small>(number, int onKeyup)</small></label>
+			<input type="number"
+				ng-model="users.advert.count"
+				ngform-validator="{type: 'number', int: 'Use integer number.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.advert.count}}</span>
+
+			<br><br>
+			<label>Float <small>(number, float onKeyup)</small></label>
+			<input type="number"
+				ng-model="users.advert.percentage.visits"
+				ngform-validator="{type: 'number', float: 'Use float number.'}"
+				ngform-validator-options="{validateOn: 'keyup'}">
+			<span style="color:Maroon;font-size:smaller" ng-cloak>{{errMsg.users.advert.percentage.visits}}</span>
+
+
+
+		</form>
+
+
+	</div>
+
+
+	<br>
+	<br>
+	<br>
+
+
+
+
+	<!-- JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+
+	<!-- JS compiled by browserify -->
+	<script src="./dist/js/ngFormValidator.js"></script>
+
+
+</body>
+</html>

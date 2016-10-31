@@ -1,21 +1,27 @@
+/**
+ * IMPORTANT!!!
+ *     All methods must return true or false only.
+ */
+
+
 /*global angular*/
 module.exports = {
     isString: function (input) {
         'use strict';
-        return angular.isString(input);
+        var tf = angular.isString(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     },
 
     isNumber: function (input) {
         'use strict';
-        var tf;
-        if (isNaN(input)) {
-            tf = false;
-        } else if (!input) { //return true if input is empty, 0 or null
-            tf = true;
-        } else {
-            tf = angular.isNumber(input);
-        }
-        return tf;
+        var tf = angular.isNumber(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     },
 
     isDate: function (input) {
@@ -72,6 +78,7 @@ module.exports = {
     isBetween: function (input, betweenArr) { //betweenArr = [3, 8]
         'use strict';
         var tf;
+        console.log(typeof input);
         if (angular.isString(input)) { //when input is string count number of characters
             tf = (input.length >= betweenArr[0] && input.length <= betweenArr[1]);
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
@@ -95,6 +102,7 @@ module.exports = {
 
     areSame: function (input, input2) { //compares input and input2
         'use strict';
+        console.log(input, ' - ', input2);
         var tf = input === input2;
 
         return (input)
@@ -196,14 +204,18 @@ module.exports = {
         'use strict';
         var tf = Number.isInteger(input);
 
-        return tf;
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     },
 
     isFloat: function (input) {
         'use strict';
         var tf = (input % 1 !== 0);
 
-        return tf;
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
 
 

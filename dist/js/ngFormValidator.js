@@ -1,5 +1,5 @@
 /*!
- *  v1.3.0 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.3.1 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
@@ -33,6 +33,95 @@ module.exports = function ($scope, $element, $attrs, $timeout) {
 /*global angular*/
 // var stringify = require('json-stringify-safe');
 
+
+/**
+ * On JS event ('keyup', 'change', ...etc) we want to get value from input form field by using ng-model="some.var".
+ * This function resolves multilevel scope object defined in ng-model="some.multilevel.scope.object".
+ * It will resolve up to 5 levels.
+ * @param  {Object} scope  - angular $scope object
+ * @param  {Object} iAttrs - attribute object which contains HTML tag attributes
+ * @return {Mixed}        - ng-model value
+ */
+var getInputModelValue = function (scope, iAttrs) {
+    'use strict';
+    var ngModelArr = iAttrs.ngModel.split('.');
+    // console.log(JSON.stringify(ngModelArr, null, 2));
+
+    var inputModel;
+
+    switch (ngModelArr.length) {
+    case 1:
+        if (scope[ngModelArr[0]]) inputModel = scope[ngModelArr[0]];
+        break;
+    case 2:
+        if (scope[ngModelArr[0]] && scope[ngModelArr[0]][ngModelArr[1]]) inputModel = scope[ngModelArr[0]][ngModelArr[1]];
+        break;
+    case 3:
+        if (scope[ngModelArr[0]] && scope[ngModelArr[0]][ngModelArr[1]] && scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]]) inputModel = scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]];
+        break;
+    case 4:
+        if (scope[ngModelArr[0]] && scope[ngModelArr[0]][ngModelArr[1]] && scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]] && scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]]) inputModel = scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]];
+        break;
+    case 5:
+        if (scope[ngModelArr[0]] && scope[ngModelArr[0]][ngModelArr[1]] && scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]] && scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]] && scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]][ngModelArr[4]]) inputModel = scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]][ngModelArr[4]];
+        break;
+    default:
+        inputModel = scope[iAttrs.ngModel];
+    }
+
+
+    return inputModel;
+};
+
+/**
+ * Takes errMsg and puts it into scope, so we can use it to output error in HTML.
+ * For example {{errMsg.users.first_name}}
+ * @param  {Object} scope  - angular's $scope object
+ * @param  {Object} iAttrs - attribute object which contains HTML tag attributes
+ * @param  {String} errMsg - error message defined in ngform-validator="{min: ['Error message ...', 2]}"
+ * @return {undefined}
+ */
+var outputErrorMessage = function (scope, iAttrs, errMsg) {
+    'use strict';
+    var ngModelArr = iAttrs.ngModel.split('.');
+    // console.log(JSON.stringify(ngModelArr, null, 2));
+
+    if (!scope.errMsg) scope.errMsg = {};
+
+    switch (ngModelArr.length) {
+    case 1:
+        scope.errMsg[ngModelArr[0]] = errMsg;
+        break;
+    case 2:
+        if (!scope.errMsg[ngModelArr[0]]) scope.errMsg[ngModelArr[0]] = {};
+        scope.errMsg[ngModelArr[0]][ngModelArr[1]] = errMsg;
+        break;
+    case 3:
+        if (!scope.errMsg[ngModelArr[0]]) scope.errMsg[ngModelArr[0]] = {};
+        if (!scope.errMsg[ngModelArr[0]][ngModelArr[1]]) scope.errMsg[ngModelArr[0]][ngModelArr[1]] = {};
+        scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]] = errMsg;
+        break;
+    case 4:
+        if (!scope.errMsg[ngModelArr[0]]) scope.errMsg[ngModelArr[0]] = {};
+        if (!scope.errMsg[ngModelArr[0]][ngModelArr[1]]) scope.errMsg[ngModelArr[0]][ngModelArr[1]] = {};
+        if (!scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]]) scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]] = {};
+        scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]] = errMsg;
+        break;
+    case 5:
+        if (!scope.errMsg[ngModelArr[0]]) scope.errMsg[ngModelArr[0]] = {};
+        if (!scope.errMsg[ngModelArr[0]][ngModelArr[1]]) scope.errMsg[ngModelArr[0]][ngModelArr[1]] = {};
+        if (!scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]]) scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]] = {};
+        if (!scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]]) scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]] = {};
+        scope.errMsg[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]][ngModelArr[4]] = errMsg;
+        break;
+    default:
+        scope.errMsg[ngModelArr[0]] = errMsg;
+    }
+
+};
+
+
+
 module.exports = function ($parse, $timeout, validateFact) {
     'use strict';
 
@@ -43,8 +132,6 @@ module.exports = function ($parse, $timeout, validateFact) {
         link: function (scope, iElem, iAttrs) { //post-link function
             // console.log(stringify(iAttrs.ngModel, null, 2));
 
-            //GET INPUT MODEL (if ng-model="age" => iAttrs.model='age')
-            // var inputModel = scope[iAttrs.ngModel];
 
             //GET RULES (from ngform-validator="{...}" which is string)
             var rulesObj = iAttrs.ngformValidator;
@@ -106,43 +193,45 @@ module.exports = function ($parse, $timeout, validateFact) {
 
 
 
-            //ERROR MESSAGE (default value)
-            scope.errMsg = {};
 
-            var errMsg;
 
             /******************************** VALIDATION on secific EVENT *********************************/
+            var errMsg;
+
 
             //** on any jquery event 'change', 'blur', 'keyup' ... https://api.jquery.com/category/events/)
             iElem.on(options.validateOn, function () {
 
+                //GET INPUT MODEL VALUE (if ng-model="age" => iAttrs.model='age')
+                var inputModel = getInputModelValue(scope, iAttrs);
+
                 $timeout(function () {
 
-                    //validator synch chain
-                    errMsg = validateFact.type[type](scope, iElem, iAttrs);
-                    if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('url')) errMsg = validateFact.url(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('tel')) errMsg = validateFact.tel(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('emptySpaces')) errMsg = validateFact.emptySpaces(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('enum')) errMsg = validateFact.enum(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('price')) errMsg = validateFact.price(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('alpha')) errMsg = validateFact.alpha(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('lowercase')) errMsg = validateFact.lowercase(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(scope, iElem, iAttrs, rulesObj);
-                    if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(scope, iElem, iAttrs, rulesObj);
+                    //validator synch chain (execute one by one)
+                    errMsg = validateFact.type[type](inputModel, iElem, scope, iAttrs); //type validator is always first
+                    if (!errMsg && rulesObj.hasOwnProperty('email')) errMsg = validateFact.email(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('url')) errMsg = validateFact.url(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('tel')) errMsg = validateFact.tel(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('min')) errMsg = validateFact.min(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('max')) errMsg = validateFact.max(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('between')) errMsg = validateFact.between(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('emptySpaces')) errMsg = validateFact.emptySpaces(inputModel, iElem, scope, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('sameAs')) errMsg = validateFact.sameAs(inputModel, iElem, scope, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('regex')) errMsg = validateFact.regex(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('enum')) errMsg = validateFact.enum(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('price')) errMsg = validateFact.price(inputModel, iElem, scope, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('alpha')) errMsg = validateFact.alpha(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('lowercase')) errMsg = validateFact.lowercase(inputModel, iElem, scope, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(inputModel, iElem, scope, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(inputModel, iElem, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(inputModel, iElem, rulesObj);
 
-                    if (!errMsg && iAttrs.ngformValidatorCustom) errMsg = validateFact.custom(scope, iElem, iAttrs, customFunc);
+                    if (!errMsg && iAttrs.ngformValidatorCustom) errMsg = validateFact.custom(inputModel, iElem, customFunc);
 
                     //error message to scope
-                    scope.errMsg[iAttrs.ngModel] = errMsg;
-                    // console.log(JSON.stringify(scope.errMsg, null, 2));
+                    console.log(errMsg);
+                    outputErrorMessage(scope, iAttrs, errMsg);
 
                 }, 800);
 
@@ -151,12 +240,16 @@ module.exports = function ($parse, $timeout, validateFact) {
 
             //** onBlur validators
             iElem.on('blur', function () {
+
+                //GET INPUT MODEL VALUE (if ng-model="age" => iAttrs.model='age')
+                var inputModel = getInputModelValue(scope, iAttrs);
+
                 $timeout(function () {
-                    if (!errMsg && rulesObj.hasOwnProperty('required')) errMsg = validateFact.required(scope, iElem, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('required')) errMsg = validateFact.required(inputModel, iElem, rulesObj);
+
 
                     //error message to scope
-                    scope.errMsg[iAttrs.ngModel] = errMsg;
-                    // console.log(JSON.stringify(scope.errMsg, null, 2));
+                    outputErrorMessage(scope, iAttrs, errMsg);
 
                 }, 1300);
             });
@@ -219,162 +312,225 @@ var sendError = function (iElem, tf, errorMessage) {
 };
 
 
+/**
+ * Update scope value. Usually on autocorrection.
+ * @param  {Object} scope  - angular $scope object
+ * @param  {Object} iAttrs - attribute object which contains HTML tag attributes
+ * @param  {Mixed}        - new value
+ */
+var updateScope = function (scope, iAttrs, newValue) {
+    'use strict';
+    var ngModelArr = iAttrs.ngModel.split('.');
+    // console.log(JSON.stringify(ngModelArr, null, 2));
+
+
+    switch (ngModelArr.length) {
+    case 1:
+        scope.$apply(function () {scope[ngModelArr[0]] = newValue;});
+        break;
+    case 2:
+        scope.$apply(function () {scope[ngModelArr[0]][ngModelArr[1]] = newValue;});
+        break;
+    case 3:
+        scope.$apply(function () {scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]] = newValue;});
+        break;
+    case 4:
+        scope.$apply(function () {scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]] = newValue;});
+        break;
+    case 5:
+        scope.$apply(function () {scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]][ngModelArr[4]] = newValue;});
+        break;
+    default:
+        scope.$apply(function () {scope[iAttrs.ngModel] = newValue;});
+    }
+
+};
+
+
 module.exports = function () {
     'use strict';
 
     return {
         type: {
 
-            string: function (scope, iElem, iAttrs) {
-                var tf = validationRules.isString(scope[iAttrs.ngModel]);
-                // console.log(tf);
+            string: function (inputModel, iElem) {
+                var tf = validationRules.isString(inputModel);
                 return sendError(iElem, tf, 'Value must be in text format (string).');
             },
 
-            number: function (scope, iElem, iAttrs) {
+            number: function (inputModel, iElem, scope, iAttrs) {
 
-                //CORRECTOR: converting model's value to number when <input type="text"> is used
-                scope[iAttrs.ngModel] = Number(scope[iAttrs.ngModel]) || scope[iAttrs.ngModel];
+                //TODO CORRECTOR: converting model's value to number when <input type="text"> is used
+                if (iElem.attr('type') !== 'number') iElem.attr('type', 'number');
+                var newVal = Number(inputModel) || inputModel;
 
-                var tf = validationRules.isNumber(scope[iAttrs.ngModel]);
-                // console.log(tf);
+                var tf = validationRules.isNumber(newVal);
+
                 return sendError(iElem, tf, 'Value must be number.');
             },
 
 
-            date: function (scope, iElem, iAttrs) {
+            date: function (inputModel, iElem, scope, iAttrs) {
 
                 //CORRECTOR: converting model's value to date when <input type="text"> is used
-                var dateCorrected = new Date(scope[iAttrs.ngModel]);
+                var dateCorrected = new Date(inputModel);
                 dateCorrected = dateCorrected.toString();
                 dateCorrected = (dateCorrected === 'Invalid Date')
                     ? false
                     : dateCorrected;
-                scope[iAttrs.ngModel] = dateCorrected || scope[iAttrs.ngModel];
+                var newValue = dateCorrected || inputModel;
 
-                var tf = validationRules.isDate(scope[iAttrs.ngModel]);
+                updateScope(scope, iAttrs, newValue);
+
+                var tf = validationRules.isDate(inputModel);
+                console.log(dateCorrected);
                 return sendError(iElem, tf, 'Value must be valid date.');
             }
         },
 
 
-        required: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = !!scope[iAttrs.ngModel]; //check if field is empty
+        required: function (inputModel, iElem, rulesObj) {
+            var tf = !!inputModel; //check if field is empty
             return sendError(iElem, tf, rulesObj.required);
         },
 
-        email: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.isEmail(scope[iAttrs.ngModel]);
+        email: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.isEmail(inputModel);
             return sendError(iElem, tf, rulesObj.email);
         },
 
-        min: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.hasMin(scope[iAttrs.ngModel], rulesObj.min[1]);
+        min: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.hasMin(inputModel, rulesObj.min[1]);
             return sendError(iElem, tf, rulesObj.min[0]);
         },
 
-        max: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.hasMax(scope[iAttrs.ngModel], rulesObj.max[1]);
+        max: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.hasMax(inputModel, rulesObj.max[1]);
             return sendError(iElem, tf, rulesObj.max[0]);
         },
 
-        between: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.isBetween(scope[iAttrs.ngModel], rulesObj.between[1]);
+        between: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.isBetween(inputModel, rulesObj.between[1]);
             return sendError(iElem, tf, rulesObj.between[0]);
         },
 
-        emptySpaces: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = !validationRules.hasEmptySpaces(scope[iAttrs.ngModel]);
+        emptySpaces: function (inputModel, iElem, scope, iAttrs, rulesObj) {
+            var tf = !validationRules.hasEmptySpaces(inputModel);
 
             //CORRECTOR: remove empty spaces from string
-            scope[iAttrs.ngModel] = scope[iAttrs.ngModel].replace(' ', '');
+            var newValue = inputModel.replace(' ', '');
+            if (inputModel.indexOf(' ') !== -1) updateScope(scope, iAttrs, newValue);
 
             return sendError(iElem, tf, rulesObj.emptySpaces);
         },
 
-        sameAs: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.areSame(scope[iAttrs.ngModel], scope[rulesObj.sameAs[1]]);
+        sameAs: function (inputModel, iElem, scope, rulesObj) {
+            var ngModelArr = rulesObj.sameAs[1].split('.');
+
+            var input2;
+            switch (ngModelArr.length) {
+            case 1:
+                input2 = scope[ngModelArr[0]];
+                break;
+            case 2:
+                input2 = scope[ngModelArr[0]][ngModelArr[1]];
+                break;
+            case 3:
+                input2 = scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]];
+                break;
+            case 4:
+                input2 = scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]];
+                break;
+            case 5:
+                input2 = scope[ngModelArr[0]][ngModelArr[1]][ngModelArr[2]][ngModelArr[3]][ngModelArr[4]];
+                break;
+            default:
+                input2 = scope[ngModelArr[0]];
+            }
+
+            var tf = validationRules.areSame(inputModel, input2);
             return sendError(iElem, tf, rulesObj.sameAs[0]);
         },
 
-        regex: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.regexTest(scope[iAttrs.ngModel], rulesObj.regex[1]);
+        regex: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.regexTest(inputModel, rulesObj.regex[1]);
             return sendError(iElem, tf, rulesObj.regex[0]);
         },
 
-        enum: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.enumTest(scope[iAttrs.ngModel], rulesObj.enum[1]);
+        enum: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.enumTest(inputModel, rulesObj.enum[1]);
             return sendError(iElem, tf, rulesObj.enum[0]);
         },
 
-        url: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.isUrl(scope[iAttrs.ngModel]);
+        url: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.isUrl(inputModel);
             return sendError(iElem, tf, rulesObj.url);
         },
 
-        price: function (scope, iElem, iAttrs, rulesObj) {
+        price: function (inputModel, iElem, scope, iAttrs, rulesObj) {
             //correct number to 2 decimal points
-            scope[iAttrs.ngModel] = parseFloat(scope[iAttrs.ngModel]).toFixed(2);
+            var newValue = parseFloat(inputModel).toFixed(2);
+            updateScope(scope, iAttrs, newValue);
         },
 
-        tel: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.isTel(scope[iAttrs.ngModel]);
+        tel: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.isTel(inputModel);
             return sendError(iElem, tf, rulesObj.tel);
         },
 
-        alpha: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.hasAlphaOnly(scope[iAttrs.ngModel]);
+        alpha: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.hasAlphaOnly(inputModel);
             return sendError(iElem, tf, rulesObj.alpha);
         },
 
-        alphanumeric: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.hasAlphanumericOnly(scope[iAttrs.ngModel]);
+        alphanumeric: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.hasAlphanumericOnly(inputModel);
             return sendError(iElem, tf, rulesObj.alphanumeric);
         },
 
-        lowercase: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.allLowercase(scope[iAttrs.ngModel]);
+        lowercase: function (inputModel, iElem, scope, iAttrs, rulesObj) {
+            var tf = validationRules.allLowercase(inputModel);
 
             //CORRECTOR: lowercase input
             if (!tf) {
                 setTimeout(function () {
-                    scope[iAttrs.ngModel] = scope[iAttrs.ngModel].toLowerCase();
-                    scope.$apply();
-                }, 1300);
+                    var newValue = inputModel.toLowerCase();
+                    updateScope(scope, iAttrs, newValue);
+                }, 600);
             }
 
             return sendError(iElem, tf, rulesObj.lowercase);
         },
 
-        uppercase: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.allUppercase(scope[iAttrs.ngModel]);
+        uppercase: function (inputModel, iElem, scope, iAttrs, rulesObj) {
+            var tf = validationRules.allUppercase(inputModel);
 
             //CORRECTOR: uppercase input
             if (!tf) {
                 setTimeout(function () {
-                    scope[iAttrs.ngModel] = scope[iAttrs.ngModel].toUpperCase();
-                    scope.$apply();
-                }, 1300);
+                    var newValue = inputModel.toUpperCase();
+                    updateScope(scope, iAttrs, newValue);
+                }, 600);
             }
 
             return sendError(iElem, tf, rulesObj.uppercase);
         },
 
-        int: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.isInteger(scope[iAttrs.ngModel]);
+        int: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.isInteger(inputModel);
             return sendError(iElem, tf, rulesObj.int);
         },
 
-        float: function (scope, iElem, iAttrs, rulesObj) {
-            var tf = validationRules.isFloat(scope[iAttrs.ngModel]);
+        float: function (inputModel, iElem, rulesObj) {
+            var tf = validationRules.isFloat(inputModel);
             return sendError(iElem, tf, rulesObj.float);
         },
 
 
         /* custom validator*/
-        custom: function (scope, iElem, iAttrs, customFunc) {
+        custom: function (inputModel, iElem, customFunc) {
 
-            var errMsg = customFunc(scope[iAttrs.ngModel]);
+            var errMsg = customFunc(inputModel);
             var tf = !errMsg;
 
             return sendError(iElem, tf, errMsg);
@@ -391,24 +547,30 @@ module.exports = function () {
 };
 
 },{"../lib/validationRules":5}],5:[function(require,module,exports){
+/**
+ * IMPORTANT!!!
+ *     All methods must return true or false only.
+ */
+
+
 /*global angular*/
 module.exports = {
     isString: function (input) {
         'use strict';
-        return angular.isString(input);
+        var tf = angular.isString(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     },
 
     isNumber: function (input) {
         'use strict';
-        var tf;
-        if (isNaN(input)) {
-            tf = false;
-        } else if (!input) { //return true if input is empty, 0 or null
-            tf = true;
-        } else {
-            tf = angular.isNumber(input);
-        }
-        return tf;
+        var tf = angular.isNumber(input);
+
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     },
 
     isDate: function (input) {
@@ -465,6 +627,7 @@ module.exports = {
     isBetween: function (input, betweenArr) { //betweenArr = [3, 8]
         'use strict';
         var tf;
+        console.log(typeof input);
         if (angular.isString(input)) { //when input is string count number of characters
             tf = (input.length >= betweenArr[0] && input.length <= betweenArr[1]);
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
@@ -488,6 +651,7 @@ module.exports = {
 
     areSame: function (input, input2) { //compares input and input2
         'use strict';
+        console.log(input, ' - ', input2);
         var tf = input === input2;
 
         return (input)
@@ -589,14 +753,18 @@ module.exports = {
         'use strict';
         var tf = Number.isInteger(input);
 
-        return tf;
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     },
 
     isFloat: function (input) {
         'use strict';
         var tf = (input % 1 !== 0);
 
-        return tf;
+        return (input)
+            ? tf
+            : true; // return true if input is empty
     }
 
 
