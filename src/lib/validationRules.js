@@ -78,7 +78,7 @@ module.exports = {
     isBetween: function (input, betweenArr) { //betweenArr = [3, 8]
         'use strict';
         var tf;
-        console.log(typeof input);
+        // console.log(typeof input);
         if (angular.isString(input)) { //when input is string count number of characters
             tf = (input.length >= betweenArr[0] && input.length <= betweenArr[1]);
         } else if (angular.isNumber(input)) { //when input is number then comapare two numbers
@@ -102,7 +102,7 @@ module.exports = {
 
     areSame: function (input, input2) { //compares input and input2
         'use strict';
-        console.log(input, ' - ', input2);
+        // console.log(input, ' - ', input2);
         var tf = input === input2;
 
         return (input)

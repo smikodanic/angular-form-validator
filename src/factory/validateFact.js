@@ -89,7 +89,7 @@ module.exports = function () {
                 updateScope(scope, iAttrs, newValue);
 
                 var tf = validationRules.isDate(inputModel);
-                console.log(dateCorrected);
+                // console.log(dateCorrected);
                 return sendError(iElem, tf, 'Value must be valid date.');
             }
         },

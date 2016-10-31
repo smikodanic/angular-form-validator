@@ -198,7 +198,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && iAttrs.ngformValidatorCustom) errMsg = validateFact.custom(inputModel, iElem, customFunc);
 
                     //error message to scope
-                    console.log(errMsg);
+                    // console.log(errMsg);
                     outputErrorMessage(scope, iAttrs, errMsg);
 
                 }, 800);
