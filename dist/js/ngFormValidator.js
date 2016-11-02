@@ -1,5 +1,5 @@
 /*!
- *  v1.4.1 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.5.1 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
