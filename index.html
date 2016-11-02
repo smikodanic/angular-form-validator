@@ -206,6 +206,19 @@
 			</div>
 
 
+			<div ng-class="{'form-group': true, 'has-error': errMsg.ucfst}">
+				<label for="ucfst" class="col-sm-5 control-label">Ucfirst: <small>(string, ucfirst onKeyup)</small></label>
+				<div class="col-sm-3">
+					<input type="text" id="ucfst" class="form-control"
+						ng-model="ucfst"
+						ngform-validator="{type: 'string', ucfirst: 'Capitalize first letter.'}"
+						ngform-validator-options="{validateOn: 'keyup'}">
+					<p class="help-block" ng-cloak>{{errMsg.ucfst}}</p>
+				</div>
+			</div>
+
+
+
 			<br><br>
 			<h4>NUMBERS</h4>
 

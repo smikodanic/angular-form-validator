@@ -222,6 +222,20 @@ module.exports = function () {
             return sendError(iElem, tf, rulesObj.uppercase);
         },
 
+        ucfirst: function (inputModel, iElem, scope, iAttrs, rulesObj) {
+            var tf = (inputModel[0].toUpperCase() === inputModel[0]);
+
+            //CORRECTOR: capitalize first letter in a string
+            if (!tf) {
+                setTimeout(function () {
+                    var newValue = inputModel.charAt(0).toUpperCase() + inputModel.slice(1);
+                    updateScope(scope, iAttrs, newValue);
+                }, 600);
+            }
+
+            return sendError(iElem, tf, rulesObj.ucfirst);
+        },
+
         int: function (inputModel, iElem, rulesObj) {
             var tf = validationRules.isInteger(inputModel);
             return sendError(iElem, tf, rulesObj.int);

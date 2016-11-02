@@ -1,5 +1,5 @@
 /*!
- *  v1.4.0 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.4.1 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
@@ -224,6 +224,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(inputModel, iElem, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('lowercase')) errMsg = validateFact.lowercase(inputModel, iElem, scope, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(inputModel, iElem, scope, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('ucfirst')) errMsg = validateFact.ucfirst(inputModel, iElem, scope, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(inputModel, iElem, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(inputModel, iElem, rulesObj);
 
@@ -514,6 +515,20 @@ module.exports = function () {
             }
 
             return sendError(iElem, tf, rulesObj.uppercase);
+        },
+
+        ucfirst: function (inputModel, iElem, scope, iAttrs, rulesObj) {
+            var tf = (inputModel[0].toUpperCase() === inputModel[0]);
+
+            //CORRECTOR: capitalize first letter in a string
+            if (!tf) {
+                setTimeout(function () {
+                    var newValue = inputModel.charAt(0).toUpperCase() + inputModel.slice(1);
+                    updateScope(scope, iAttrs, newValue);
+                }, 600);
+            }
+
+            return sendError(iElem, tf, rulesObj.ucfirst);
         },
 
         int: function (inputModel, iElem, rulesObj) {

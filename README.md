@@ -84,6 +84,7 @@ Config (rules and error messages) are defined inside **config** object.
 - **alphanumeric** - letters with numbers only (special characters are not allowed)
 - **lowercase** - letters must be lowercase, if not it will be converted automatically
 - **uppercase** - letters must be uppercase, if not it will be converted automatically
+- **ucfirst** - capitalize first letter
 
 #### NUMBER
 - **int** - check if number is integer (52) and if not it will make correction

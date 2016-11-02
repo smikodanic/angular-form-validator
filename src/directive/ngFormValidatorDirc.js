@@ -192,6 +192,7 @@ module.exports = function ($parse, $timeout, validateFact) {
                     if (!errMsg && rulesObj.hasOwnProperty('alphanumeric')) errMsg = validateFact.alphanumeric(inputModel, iElem, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('lowercase')) errMsg = validateFact.lowercase(inputModel, iElem, scope, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('uppercase')) errMsg = validateFact.uppercase(inputModel, iElem, scope, iAttrs, rulesObj);
+                    if (!errMsg && rulesObj.hasOwnProperty('ucfirst')) errMsg = validateFact.ucfirst(inputModel, iElem, scope, iAttrs, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('int')) errMsg = validateFact.int(inputModel, iElem, rulesObj);
                     if (!errMsg && rulesObj.hasOwnProperty('float')) errMsg = validateFact.float(inputModel, iElem, rulesObj);
 
