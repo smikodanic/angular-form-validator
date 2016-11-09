@@ -1,5 +1,5 @@
 /*!
- *  v1.5.1 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.5.2 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2016 Sasa Mikodanic
  * Licensed under MIT 
  */
@@ -418,9 +418,15 @@ module.exports = function () {
         emptySpaces: function (inputModel, iElem, scope, iAttrs, rulesObj) {
             var tf = !validationRules.hasEmptySpaces(inputModel);
 
+            var newValue;
+
             //CORRECTOR: remove empty spaces from string
-            var newValue = inputModel.replace(' ', '');
-            if (inputModel.indexOf(' ') !== -1) updateScope(scope, iAttrs, newValue);
+            if (inputModel) {
+                newValue = inputModel.replace(' ', '');
+                if (inputModel.indexOf(' ') !== -1) updateScope(scope, iAttrs, newValue);
+            } else {
+                tf = true;
+            }
 
             return sendError(iElem, tf, rulesObj.emptySpaces);
         },

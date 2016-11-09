@@ -123,9 +123,15 @@ module.exports = function () {
         emptySpaces: function (inputModel, iElem, scope, iAttrs, rulesObj) {
             var tf = !validationRules.hasEmptySpaces(inputModel);
 
+            var newValue;
+
             //CORRECTOR: remove empty spaces from string
-            var newValue = inputModel.replace(' ', '');
-            if (inputModel.indexOf(' ') !== -1) updateScope(scope, iAttrs, newValue);
+            if (inputModel) {
+                newValue = inputModel.replace(' ', '');
+                if (inputModel.indexOf(' ') !== -1) updateScope(scope, iAttrs, newValue);
+            } else {
+                tf = true;
+            }
 
             return sendError(iElem, tf, rulesObj.emptySpaces);
         },
