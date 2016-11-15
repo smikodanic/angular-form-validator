@@ -73,6 +73,7 @@ Config (rules and error messages) are defined inside **config** object.
 - **string** - accepts any string value
 - **number** - accepts integer or float numbers (12 , 12.23, 1.2e-21)
 - **date** - accept valid date formats mm/dd/yy , mm/d/yyy hh:mm:ss , m.d.yy , mm.dd.hh and converts it automatically
+- **boolean** - Any string or 'true' converts to boolean *true*. String 'false' converts to boolean *false*. (This is corrector, not validator!)
 
 #### MIN, MAX, BETWEEN
 - **min** - If type:'number' then it will compare two numbers (input >= number). If type:'string' will validate number of characters.

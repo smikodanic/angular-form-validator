@@ -75,15 +75,13 @@ module.exports = function () {
                 return sendError(iElem, tf, 'Value must be number.');
             },
 
-
             date: function (inputModel, iElem, scope, iAttrs) {
 
                 //CORRECTOR: converting model's value to date when <input type="text"> is used
                 var dateCorrected = new Date(inputModel);
                 dateCorrected = dateCorrected.toString();
-                dateCorrected = (dateCorrected === 'Invalid Date')
-                    ? false
-                    : dateCorrected;
+                dateCorrected = (dateCorrected === 'Invalid Date') ? false : dateCorrected;
+
                 var newValue = dateCorrected || inputModel;
 
                 updateScope(scope, iAttrs, newValue);
@@ -91,6 +89,15 @@ module.exports = function () {
                 var tf = validationRules.isDate(inputModel);
                 // console.log(dateCorrected);
                 return sendError(iElem, tf, 'Value must be valid date.');
+            },
+
+            boolean: function (inputModel, iElem, scope, iAttrs) {
+                //CORRECTOR: converting model's value to boolean: 'true' or any string to true and 'false string to false'
+                var newValue = (inputModel === 'false') ? false : true;
+                updateScope(scope, iAttrs, newValue);
+
+                var tf = true; //error will not be shown because it's corrector, not validator
+                return sendError(iElem, tf, 'Values are converted to boolean.');
             }
         },
 
