@@ -30,6 +30,7 @@
   "homepage": "https://github.com/smikodanic/angular-form-validator#readme",
   "dependencies": {
     "browserify": "^13.1.0",
+    "gulp": "^3.9.1",
     "gulp-compass": "^2.1.0",
     "gulp-header": "^1.8.8",
     "gulp-htmlmin": "^2.0.0",
