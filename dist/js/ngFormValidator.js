@@ -1,5 +1,5 @@
 /*!
- *  v1.6.0 (https://github.com/smikodanic/angular-form-validator#readme)
+ *  v1.6.1 (https://github.com/smikodanic/angular-form-validator#readme)
  * Copyright 2014-2017 Sasa Mikodanic
  * Licensed under MIT 
  */
@@ -361,7 +361,7 @@ module.exports = function () {
 
             number: function (inputModel, iElem, scope, iAttrs) {
 
-                //TODO CORRECTOR: converting model's value to number when <input type="text"> is used
+                //ToDo CORRECTOR: converting model's value to number when <input type="text"> is used
                 if (iElem.attr('type') !== 'number') iElem.attr('type', 'number');
                 var newVal = Number(inputModel) || inputModel;
 
@@ -531,14 +531,19 @@ module.exports = function () {
         },
 
         ucfirst: function (inputModel, iElem, scope, iAttrs, rulesObj) {
-            var tf = (inputModel[0].toUpperCase() === inputModel[0]);
+            var tf;
+            if (inputModel) {
+                tf = (inputModel[0].toUpperCase() === inputModel[0]);
 
-            //CORRECTOR: capitalize first letter in a string
-            if (!tf) {
-                setTimeout(function () {
-                    var newValue = inputModel.charAt(0).toUpperCase() + inputModel.slice(1);
-                    updateScope(scope, iAttrs, newValue);
-                }, 600);
+                //CORRECTOR: capitalize first letter in a string
+                if (!tf) {
+                    setTimeout(function () {
+                        var newValue = inputModel.charAt(0).toUpperCase() + inputModel.slice(1);
+                        updateScope(scope, iAttrs, newValue);
+                    }, 600);
+                }
+            } else {
+                tf = true;
             }
 
             return sendError(iElem, tf, rulesObj.ucfirst);
